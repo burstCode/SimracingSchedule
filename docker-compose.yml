@@ -1,8 +1,45 @@
 services:
   simracing-schedule:
-    container_name: simracing-schedule
+    container_name: simracing-schedule-api
     build:
       context: SimRacingSchedule.Api/
       dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     ports:
       - "5000:8080"
+    networks:
+      - simracing-network
+
+  db:
+    image: postgres
+    restart: always
+    container_name: simracing-postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - simracing-network
+
+  adminer:
+    image: adminer
+    restart: always
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - simracing-network
+
+networks:
+  simracing-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
