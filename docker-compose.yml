@@ -1,0 +1,8 @@
+services:
+  simracing-schedule:
+    container_name: simracing-schedule
+    build:
+      context: SimRacingSchedule.Api/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
