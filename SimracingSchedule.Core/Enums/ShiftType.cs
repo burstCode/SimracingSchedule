@@ -1,10 +1,4 @@
-namespace SimRacingSchedule.Core;
-
-public enum EmployeeRole
-{
-    Employee,
-    Administrator
-}
+namespace SimRacingSchedule.Core.Enums;
 
 public enum ShiftType
 {
@@ -19,21 +13,4 @@ public enum ShiftType
     // Обычный режим работы клуба ниже.
     FullDay,    // 13:00 -> 22:00
 
-}
-
-
-public enum ShiftStatus
-{
-    Scheduled,
-    InProgress,
-    Completed,
-    Cancelled
-}
-
-public enum ExchangeRequestStatus
-{
-    Pending,
-    Approved,
-    Rejected,
-    Cancelled
 }

@@ -1,3 +1,7 @@
+using Microsoft.OpenApi.Extensions;
+using SimRacingSchedule.Core.Entities;
+using SimRacingSchedule.Core.Enums;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,6 +39,30 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+// Создание сотрудника
+var employee = new Employee(
+    "Иван",
+    "Петров",
+    "ivan@simracing.com",
+    "+79001234567",
+    "Инструктор",
+    EmployeeRole.Employee);
+
+Console.WriteLine($"Сотрудник: {employee.FirstName} {employee.LastName}");
+Console.WriteLine($"Роль: {employee.Role.GetDisplayName()}");
+
+// Создание смены
+var shiftDate = DateTime.Today.AddDays(7); // Через неделю
+var shift = new Shift(employee.Id, shiftDate, ShiftType.FullDay);
+
+Console.WriteLine($"Смена: {shift.Type.GetDisplayName()}");
+Console.WriteLine($"Время: {shift.StartTime:HH:mm} - {shift.EndTime:HH:mm}");
+Console.WriteLine($"Статус: {shift.Status.GetDisplayName()}");
+
+// Проверка длительности смены
+var duration = Shift.GetShiftDuration(ShiftType.FullDay);
+Console.WriteLine($"Длительность: {duration.Hours} часов");
 
 app.Run();
 

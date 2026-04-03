@@ -1,65 +1,82 @@
-﻿using SimRacingSchedule.Core.ValueObjects;
+﻿using SimRacingSchedule.Core.Enums;
 
 namespace SimRacingSchedule.Core.Entities;
 
-/// <summary>
-/// Сотрудник симрейсинг-клуба.
-/// </summary>
 public class Employee
 {
-    private readonly List<Shift> _shifts = new();
-    private readonly List<ShiftExchangeRequest> _sentExchangeRequests = new();
-    private readonly List<ShiftExchangeRequest> _receivedExchangeRequests = new();
-
     public Guid Id { get; private set; }
-    public FullName FullName { get; private set; }
-    public Email Email { get; private set; }
-    public PhoneNumber PhoneNumber { get; private set; }
-    public Position Position { get; private set; }
-    public EmployeeRole EmployeeRole { get; private set; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public string? Patronymic { get; private set; }
+    public string Email { get; private set; }
+    public string PhoneNumber { get; private set; }
+    public string Position { get; private set; }
+    public EmployeeRole Role { get; private set; }
     public bool IsActive { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
+    private readonly List<Shift> _shifts = new();
     public IReadOnlyCollection<Shift> Shifts => _shifts.AsReadOnly();
+
+    private readonly List<ShiftExchangeRequest> _sentExchangeRequests = new();
     public IReadOnlyCollection<ShiftExchangeRequest> SentExchangeRequests => _sentExchangeRequests.AsReadOnly();
+
+    private readonly List<ShiftExchangeRequest> _receivedExchangeRequests = new();
     public IReadOnlyCollection<ShiftExchangeRequest> ReceivedExchangeRequests => _receivedExchangeRequests.AsReadOnly();
 
     public Employee(
-        Guid id,
-        FullName fullName,
-        Email email,
-        PhoneNumber phoneNumber,
-        Position position,
-        EmployeeRole employeeRole = EmployeeRole.Employee)
+        string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        string position,
+        EmployeeRole role = EmployeeRole.Employee)
     {
-        Id = id == Guid.Empty ? Guid.NewGuid() : id;
-        FullName = fullName ?? throw new ArgumentException(nameof(fullName));
-        Email = email ?? throw new ArgumentException(nameof(email));
-        PhoneNumber = phoneNumber ?? throw new ArgumentException(nameof(phoneNumber));
-        Position = position ?? throw new ArgumentException(nameof(position));
-        EmployeeRole = employeeRole;
+        Id = Guid.NewGuid();
+        FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+        LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+        Email = email ?? throw new ArgumentNullException(nameof(email));
+        PhoneNumber = phoneNumber ?? throw new ArgumentNullException(nameof(phoneNumber));
+        Position = position ?? throw new ArgumentNullException(nameof(position));
+        Role = role;
         IsActive = true;
+        CreatedAt = DateTime.UtcNow;
     }
 
-    public void UpdateProfile(FullName fullName, Email email, PhoneNumber phoneNumber)
+    public void Update(
+        string firstName,
+        string lastName,
+        string? patronymic,
+        string email,
+        string phoneNumber,
+        string position)
     {
-        FullName = fullName;
+        FirstName = firstName;
+        LastName = lastName;
+        Patronymic = patronymic;
         Email = email;
         PhoneNumber = phoneNumber;
+        Position = position;
+        UpdatedAt = DateTime.UtcNow;
     }
 
-    public void ChangePosition(Position newPosition)
+    public void ChangeRole(EmployeeRole newRole)
     {
-        Position = newPosition;
+        Role = newRole;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Activate()
     {
         IsActive = true;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Deactivate()
     {
         IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public bool CanExchangeShift(Shift shift, Employee targetEmployee)
@@ -73,8 +90,10 @@ public class Employee
         if (shift.StartTime <= DateTime.UtcNow)
             return false;
 
-        bool targetHasConflict = targetEmployee.Shifts.Any(s =>
-            s.StartTime < shift.EndTime && s.EndTime > shift.StartTime);
+        var targetHasConflict = targetEmployee.Shifts.Any(s =>
+            s.Status == ShiftStatus.Scheduled &&
+            s.StartTime < shift.EndTime &&
+            s.EndTime > shift.StartTime);
 
         return !targetHasConflict;
     }

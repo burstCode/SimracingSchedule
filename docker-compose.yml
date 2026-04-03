@@ -2,8 +2,8 @@ services:
   simracing-schedule:
     container_name: simracing-schedule-api
     build:
-      context: SimRacingSchedule.Api/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: SimRacingSchedule.Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
