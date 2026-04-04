@@ -1,13 +1,27 @@
-using Microsoft.OpenApi.Extensions;
-using SimRacingSchedule.Core.Entities;
-using SimRacingSchedule.Core.Enums;
+using Microsoft.EntityFrameworkCore;
+using SimRacingSchedule.Application.Commands.ShiftExchange;
+using SimRacingSchedule.Application.Mappings;
+using SimRacingSchedule.Infrastructure;
+using SimRacingSchedule.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new()
+{
+    Title = "SimRacing Schedule API",
+    Version = "v1"
+}));
+
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(CreateShiftExchangeCommandHandler).Assembly));
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
 var app = builder.Build();
 
@@ -19,54 +33,51 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
-var summaries = new[]
+using (var scope = app.Services.CreateScope())
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    try
+    {
+        await dbContext.Database.MigrateAsync();
+        Console.WriteLine("✅ DB migiration completed successfully!");
 
-// Создание сотрудника
-var employee = new Employee(
-    "Иван",
-    "Петров",
-    "ivan@simracing.com",
-    "+79001234567",
-    "Инструктор",
-    EmployeeRole.Employee);
+        var employeesCount = await dbContext.Employees.CountAsync();
+        var shiftsCount = await dbContext.Shifts.CountAsync();
+        var exchangesCount = await dbContext.ShiftExchangeRequests.CountAsync();
 
-Console.WriteLine($"Сотрудник: {employee.FirstName} {employee.LastName}");
-Console.WriteLine($"Роль: {employee.Role.GetDisplayName()}");
+        Console.WriteLine($"📊 Database stats: {employeesCount} employees, {shiftsCount} shifts, {exchangesCount} exchange requests");
+    }
+    catch (Exception exception)
+    {
+        Console.WriteLine($"❌ Database migration failed: {exception.Message}");
+    }
+}
+// var summaries = new[]
+// {
+//     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+// };
 
-// Создание смены
-var shiftDate = DateTime.Today.AddDays(7); // Через неделю
-var shift = new Shift(employee.Id, shiftDate, ShiftType.FullDay);
-
-Console.WriteLine($"Смена: {shift.Type.GetDisplayName()}");
-Console.WriteLine($"Время: {shift.StartTime:HH:mm} - {shift.EndTime:HH:mm}");
-Console.WriteLine($"Статус: {shift.Status.GetDisplayName()}");
-
-// Проверка длительности смены
-var duration = Shift.GetShiftDuration(ShiftType.FullDay);
-Console.WriteLine($"Длительность: {duration.Hours} часов");
+// app.MapGet("/weatherforecast", () =>
+// {
+//     var forecast = Enumerable.Range(1, 5).Select(index =>
+//         new WeatherForecast
+//         (
+//             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+//             Random.Shared.Next(-20, 55),
+//             summaries[Random.Shared.Next(summaries.Length)]
+//         ))
+//         .ToArray();
+//     return forecast;
+// })
+// .WithName("GetWeatherForecast")
+// .WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+// record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+// {
+//     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+// }

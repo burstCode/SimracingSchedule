@@ -6,20 +6,20 @@ public class ShiftExchangeRequest
 {
     public Guid Id { get; private set; }
     public Guid RequesterId { get; private set; }
-    public Employee? Requester { get; private set; }
+    public Employee Requester { get; private set; }
     public Guid TargetId { get; private set; }
-    public Employee? Target { get; private set; }
+    public Employee Target { get; private set; }
     public Guid RequesterShiftId { get; private set; }
-    public Shift? RequesterShift { get; private set; }
+    public Shift RequesterShift { get; private set; }
     public Guid TargetShiftId { get; private set; }
-    public Shift? TargetShift { get; private set; }
+    public Shift TargetShift { get; private set; }
     public ExchangeRequestStatus Status { get; private set; }
     public string? RequestMessage { get; private set; }
     public string? ResponseMessage { get; private set; }
     public DateTime RequestedAt { get; private set; }
     public DateTime? RespondedAt { get; private set; }
 
-    private ShiftExchangeRequest() { } // EF Core
+    private ShiftExchangeRequest() { }
 
     public ShiftExchangeRequest(
         Employee requester,
