@@ -1,4 +1,5 @@
 using MediatR;
+using SimRacingSchedule.Core.Entities;
 using SimRacingSchedule.Core.Interfaces;
 
 namespace SimRacingSchedule.Application.Commands.ShiftExchange;
@@ -6,28 +7,29 @@ namespace SimRacingSchedule.Application.Commands.ShiftExchange;
 public record RespondToShiftExchangeCommand(
     Guid RequestId,
     bool Approve,
-    string? Message
-) : IRequest<RespondToShiftExchangeResult>;
+    string? Message) : IRequest<RespondToShiftExchangeResult>;
 
 public record RespondToShiftExchangeResult(
     bool Success,
-    string? ErrorMessage
-);
+    string? ErrorMessage);
 
 public class RespondToShiftExchangeCommandHandler : IRequestHandler<RespondToShiftExchangeCommand, RespondToShiftExchangeResult>
 {
-    private readonly IShiftExchangeRepository _exchangeRepository;
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+    private readonly IShiftExchangeRepository m_ExchangeRepository;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 
     public RespondToShiftExchangeCommandHandler(IShiftExchangeRepository exchangeRepository)
     {
-        _exchangeRepository = exchangeRepository;
+        this.m_ExchangeRepository = exchangeRepository;
     }
 
     public async Task<RespondToShiftExchangeResult> Handle(
         RespondToShiftExchangeCommand command,
         CancellationToken cancellationToken)
     {
-        var exchangeRequest = await _exchangeRepository.GetByIdAsync(command.RequestId, cancellationToken);
+        ShiftExchangeRequest? exchangeRequest = await this.m_ExchangeRepository.GetByIdAsync(command.RequestId, cancellationToken)
+        .ConfigureAwait(false);
 
         if (exchangeRequest == null)
         {
@@ -45,8 +47,8 @@ public class RespondToShiftExchangeCommandHandler : IRequestHandler<RespondToShi
                 exchangeRequest.Reject(command.Message);
             }
 
-            await _exchangeRepository.UpdateAsync(exchangeRequest, cancellationToken);
-            await _exchangeRepository.SaveChangesAsync(cancellationToken);
+            await this.m_ExchangeRepository.UpdateAsync(exchangeRequest, cancellationToken).ConfigureAwait(false);
+            await this.m_ExchangeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return new RespondToShiftExchangeResult(true, null);
         }

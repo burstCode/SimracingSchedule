@@ -9,39 +9,43 @@ public record CreateShiftExchangeCommand(
     Guid TargetId,
     Guid RequesterShiftId,
     Guid TargetShiftId,
-    string? Message
-) : IRequest<CreateShiftExchangeResult>;
+    string? Message) : IRequest<CreateShiftExchangeResult>;
 
 public record CreateShiftExchangeResult(
     bool Success,
     Guid? RequestId,
-    string? ErrorMessage
-);
+    string? ErrorMessage);
 
 public class CreateShiftExchangeCommandHandler : IRequestHandler<CreateShiftExchangeCommand, CreateShiftExchangeResult>
 {
-    private readonly IShiftExchangeRepository _exchangeRepository;
-    private readonly IEmployeeRepository _employeeRepository;
-    private readonly IShiftRepository _shiftRepository;
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+    private readonly IShiftExchangeRepository m_ExchangeRepository;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+    private readonly IEmployeeRepository m_EmployeeRepository;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+    private readonly IShiftRepository m_ShiftRepository;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 
     public CreateShiftExchangeCommandHandler(
         IShiftExchangeRepository exchangeRepository,
         IEmployeeRepository employeeRepository,
         IShiftRepository shiftRepository)
     {
-        _exchangeRepository = exchangeRepository;
-        _employeeRepository = employeeRepository;
-        _shiftRepository = shiftRepository;
+        this.m_ExchangeRepository = exchangeRepository;
+        this.m_EmployeeRepository = employeeRepository;
+        this.m_ShiftRepository = shiftRepository;
     }
 
     public async Task<CreateShiftExchangeResult> Handle(
         CreateShiftExchangeCommand command,
         CancellationToken cancellationToken)
     {
-        var requester = await _employeeRepository.GetByIdAsync(command.RequesterId, cancellationToken);
-        var target = await _employeeRepository.GetByIdAsync(command.TargetId, cancellationToken);
-        var requesterShift = await _shiftRepository.GetByIdAsync(command.RequesterShiftId, cancellationToken);
-        var targetShift = await _shiftRepository.GetByIdAsync(command.TargetShiftId, cancellationToken);
+        Employee? requester = await this.m_EmployeeRepository.GetByIdAsync(command.RequesterId, cancellationToken).ConfigureAwait(false);
+        Employee? target = await this.m_EmployeeRepository.GetByIdAsync(command.TargetId, cancellationToken).ConfigureAwait(false);
+        Shift? requesterShift = await this.m_ShiftRepository.GetByIdAsync(command.RequesterShiftId, cancellationToken).ConfigureAwait(false);
+        Shift? targetShift = await this.m_ShiftRepository.GetByIdAsync(command.TargetShiftId, cancellationToken).ConfigureAwait(false);
 
         if (requester == null || target == null || requesterShift == null || targetShift == null)
         {
@@ -50,11 +54,11 @@ public class CreateShiftExchangeCommandHandler : IRequestHandler<CreateShiftExch
 
         try
         {
-            var exchangeRequest = new ShiftExchangeRequest(
+            ShiftExchangeRequest exchangeRequest = new ShiftExchangeRequest(
                 requester, target, requesterShift, targetShift, command.Message);
 
-            await _exchangeRepository.AddAsync(exchangeRequest, cancellationToken);
-            await _exchangeRepository.SaveChangesAsync(cancellationToken);
+            await this.m_ExchangeRepository.AddAsync(exchangeRequest, cancellationToken).ConfigureAwait(false);
+            await this.m_ExchangeRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return new CreateShiftExchangeResult(true, exchangeRequest.Id, null);
         }

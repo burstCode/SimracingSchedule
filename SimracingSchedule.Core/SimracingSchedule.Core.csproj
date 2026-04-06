@@ -8,18 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- <PackageReference Include="SonarAnalyzer.CSharp" Version="1.21.0">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="1.21.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference> -->
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="SonarLint.xml" />
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
 </Project>

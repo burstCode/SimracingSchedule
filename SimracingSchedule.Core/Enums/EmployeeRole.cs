@@ -1,7 +1,17 @@
 namespace SimRacingSchedule.Core.Enums;
 
+/// <summary>
+/// Роли сотрудников.
+/// </summary>
 public enum EmployeeRole
 {
+    /// <summary>
+    /// Сотрудник.
+    /// </summary>
     Employee,
-    Administrator
+
+    /// <summary>
+    /// Администратор.
+    /// </summary>
+    Administrator,
 }

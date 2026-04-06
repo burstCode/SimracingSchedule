@@ -2,8 +2,16 @@ using SimRacingSchedule.Core.Enums;
 
 namespace SimRacingSchedule.Core.Extensions;
 
+/// <summary>
+/// Помощники для перечислений.
+/// </summary>
 public static class EnumExtensions
 {
+    /// <summary>
+    /// Получить отображаемое имя перечисления.
+    /// </summary>
+    /// <param name="shiftType">Тип смены.</param>
+    /// <returns>Отображаемое имя.</returns>
     public static string GetDisplayName(this ShiftType shiftType)
     {
         return shiftType switch
@@ -16,6 +24,11 @@ public static class EnumExtensions
         };
     }
 
+    /// <summary>
+    /// Получить отображаемое имя перечисления.
+    /// </summary>
+    /// <param name="status">Статус смены.</param>
+    /// <returns>Отображаемое имя.</returns>
     public static string GetDisplayName(this ShiftStatus status)
     {
         return status switch
@@ -28,6 +41,11 @@ public static class EnumExtensions
         };
     }
 
+    /// <summary>
+    /// Получить отображаемое имя перечисления.
+    /// </summary>
+    /// <param name="status">Статус обмена сменами.</param>
+    /// <returns>Отображаемое имя.</returns>
     public static string GetDisplayName(this ExchangeRequestStatus status)
     {
         return status switch
@@ -40,6 +58,11 @@ public static class EnumExtensions
         };
     }
 
+    /// <summary>
+    /// Получить отображаемое имя перечисления.
+    /// </summary>
+    /// <param name="role">Роль сотрудника.</param>
+    /// <returns>Отображаемое имя.</returns>
     public static string GetDisplayName(this EmployeeRole role)
     {
         return role switch

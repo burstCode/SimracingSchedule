@@ -9,38 +9,38 @@ public class ShiftExchangeRequestConfiguration : IEntityTypeConfiguration<ShiftE
 {
     public void Configure(EntityTypeBuilder<ShiftExchangeRequest> builder)
     {
-        builder.HasKey(r => r.Id);
+        _ = builder.HasKey(r => r.Id);
 
-        builder.HasIndex(r => new { r.RequesterId, r.TargetId, r.Status });
-        builder.HasIndex(r => r.Status);
+        _ = builder.HasIndex(r => new { r.RequesterId, r.TargetId, r.Status });
+        _ = builder.HasIndex(r => r.Status);
 
-        builder.Property(r => r.Status)
+        _ = builder.Property(r => r.Status)
             .HasConversion<int>()
             .IsRequired()
             .HasDefaultValue(ExchangeRequestStatus.Pending);
 
-        builder.Property(r => r.RequestMessage)
+        _ = builder.Property(r => r.RequestMessage)
             .HasMaxLength(500);
 
-        builder.Property(r => r.ResponseMessage)
+        _ = builder.Property(r => r.ResponseMessage)
             .HasMaxLength(500);
 
-        builder.HasOne(r => r.Requester)
+        _ = builder.HasOne(r => r.Requester)
             .WithMany(e => e.SentExchangeRequests)
             .HasForeignKey(r => r.RequesterId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(r => r.Target)
+        _ = builder.HasOne(r => r.Target)
             .WithMany(e => e.ReceivedExchangeRequests)
             .HasForeignKey(r => r.TargetId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(r => r.RequesterShift)
+        _ = builder.HasOne(r => r.RequesterShift)
             .WithMany(s => s.SentExchangeRequests)
             .HasForeignKey(r => r.RequesterShiftId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(r => r.TargetShift)
+        _ = builder.HasOne(r => r.TargetShift)
             .WithMany(s => s.ReceivedExchangeRequests)
             .HasForeignKey(r => r.TargetShiftId)
             .OnDelete(DeleteBehavior.Restrict);

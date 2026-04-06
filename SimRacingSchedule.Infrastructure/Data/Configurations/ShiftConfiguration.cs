@@ -9,27 +9,27 @@ public class ShiftConfiguration : IEntityTypeConfiguration<Shift>
 {
     public void Configure(EntityTypeBuilder<Shift> builder)
     {
-        builder.HasKey(s => s.Id);
+        _ = builder.HasKey(s => s.Id);
 
-        builder.HasIndex(s => new { s.EmployeeId, s.StartTime });
-        builder.HasIndex(s => s.Status);
+        _ = builder.HasIndex(s => new { s.EmployeeId, s.StartTime });
+        _ = builder.HasIndex(s => s.Status);
 
-        builder.Property(s => s.Type)
+        _ = builder.Property(s => s.Type)
             .HasConversion<int>()
             .IsRequired();
 
-        builder.Property(s => s.Status)
+        _ = builder.Property(s => s.Status)
             .HasConversion<int>()
             .IsRequired()
             .HasDefaultValue(ShiftStatus.Scheduled);
 
-        builder.Property(s => s.Notes)
+        _ = builder.Property(s => s.Notes)
             .HasMaxLength(500);
 
-        builder.Property(s => s.StartTime)
+        _ = builder.Property(s => s.StartTime)
             .IsRequired();
 
-        builder.Property(s => s.EndTime)
+        _ = builder.Property(s => s.EndTime)
             .IsRequired();
     }
 }

@@ -13,14 +13,14 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(options =>
+        _ = services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-        services.AddScoped<IShiftRepository, ShiftRepository>();
-        services.AddScoped<IShiftExchangeRepository, ShiftExchangeRepository>();
+        _ = services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        _ = services.AddScoped<IShiftRepository, ShiftRepository>();
+        _ = services.AddScoped<IShiftExchangeRepository, ShiftExchangeRepository>();
 
         return services;
     }

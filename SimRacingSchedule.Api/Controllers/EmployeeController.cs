@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SimRacingSchedule.Core.Entities;
 using SimRacingSchedule.Core.Enums;
 using SimRacingSchedule.Infrastructure.Data;
 
@@ -9,17 +10,19 @@ namespace SimRacingSchedule.Api.Controllers;
 [Route("api/[controller]")]
 public class EmployeesController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+    private readonly ApplicationDbContext m_Context;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 
     public EmployeesController(ApplicationDbContext context)
     {
-        _context = context;
+        this.m_Context = context;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var employees = await _context.Employees
+        var employees = await this.m_Context.Employees
             .Where(e => e.IsActive)
             .Select(e => new
             {
@@ -31,11 +34,11 @@ public class EmployeesController : ControllerBase
                 e.PhoneNumber,
                 e.Position,
                 Role = e.Role.ToString(),
-                e.IsActive
+                e.IsActive,
             })
             .ToListAsync();
 
-        return Ok(employees);
+        return this.Ok(employees);
     }
 
     [HttpGet("{id}/shifts")]
@@ -46,16 +49,16 @@ public class EmployeesController : ControllerBase
     {
         try
         {
-            var startDate = from.HasValue
+            DateTime startDate = from.HasValue
                 ? DateTime.SpecifyKind(from.Value.Date, DateTimeKind.Utc)
                 : DateTime.UtcNow.Date;
 
-            var endDate = to.HasValue
+            DateTime endDate = to.HasValue
                 ? DateTime.SpecifyKind(to.Value.Date.AddDays(1).AddTicks(-1), DateTimeKind.Utc)
                 : DateTime.UtcNow.Date.AddDays(30);
 
             // 1. Все ОДОБРЕННЫЕ обмены
-            var approvedExchanges = await _context.ShiftExchangeRequests
+            var approvedExchanges = await this.m_Context.ShiftExchangeRequests
                 .Where(r => r.Status == ExchangeRequestStatus.Approved)
                 .Select(r => new
                 {
@@ -63,14 +66,14 @@ public class EmployeesController : ControllerBase
                     r.TargetId,
                     RequesterShiftId = r.RequesterShiftId,
                     TargetShiftId = r.TargetShiftId,
-                    RequesterName = r.Requester.FirstName + " " + r.Requester.LastName,
-                    TargetName = r.Target.FirstName + " " + r.Target.LastName
+                    RequesterName = r.Requester!.FirstName + " " + r.Requester.LastName,
+                    TargetName = r.Target!.FirstName + " " + r.Target.LastName,
                 })
                 .ToListAsync();
 
             // 2. Словари: кто кому какую смену передал
-            var shiftToNewOwner = new Dictionary<Guid, Guid>(); // shiftId -> новый владелец
-            var shiftFromOldOwner = new Dictionary<Guid, Guid>(); // shiftId -> старый владелец
+            Dictionary<Guid, Guid> shiftToNewOwner = new Dictionary<Guid, Guid>(); // shiftId -> новый владелец
+            Dictionary<Guid, Guid> shiftFromOldOwner = new Dictionary<Guid, Guid>(); // shiftId -> старый владелец
 
             foreach (var exchange in approvedExchanges)
             {
@@ -84,24 +87,24 @@ public class EmployeesController : ControllerBase
             }
 
             // 3. Получаем ВСЕ смены в нужном диапазоне
-            var allShifts = await _context.Shifts
+            List<Shift> allShifts = await this.m_Context.Shifts
                 .Where(s => s.StartTime >= startDate && s.StartTime <= endDate)
                 .ToListAsync();
 
-            var result = new List<object>();
+            List<object> result = new List<object>();
 
-            foreach (var shift in allShifts)
+            foreach (Shift? shift in allShifts)
             {
                 // Проверяем, кому сейчас принадлежит эта смена
-                if (shiftToNewOwner.TryGetValue(shift.Id, out var currentOwnerId))
+                if (shiftToNewOwner.TryGetValue(shift.Id, out Guid currentOwnerId))
                 {
                     // Смена была передана
                     if (currentOwnerId == id)
                     {
                         // Эта смена ПРИНАДЛЕЖИТ текущему сотруднику (получена от другого)
-                        var originalOwnerId = shiftFromOldOwner[shift.Id];
-                        var originalOwner = await _context.Employees.FindAsync(originalOwnerId);
-                        var originalOwnerName = originalOwner != null
+                        Guid originalOwnerId = shiftFromOldOwner[shift.Id];
+                        Employee? originalOwner = await this.m_Context.Employees.FindAsync(originalOwnerId);
+                        string originalOwnerName = originalOwner != null
                             ? originalOwner.FirstName + " " + originalOwner.LastName
                             : "Unknown";
 
@@ -120,7 +123,6 @@ public class EmployeesController : ControllerBase
                     }
                     else
                     {
-                        // Смена НЕ ПРИНАДЛЕЖИТ текущему сотруднику (пропускаем)
                         continue;
                     }
                 }
@@ -140,16 +142,15 @@ public class EmployeesController : ControllerBase
                         ExchangedWithName = (string?)null,
                     });
                 }
-                // Иначе - смена чужого сотрудника, не участвовавшая в обмене
             }
 
             result = result.OrderBy(x => ((dynamic)x).StartTime).ToList();
 
-            return Ok(result);
+            return this.Ok(result);
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { error = "Internal server error", message = ex.Message });
+            return this.StatusCode(500, new { error = "Internal server error", message = ex.Message });
         }
     }
 }

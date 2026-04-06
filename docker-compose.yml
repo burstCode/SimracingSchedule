@@ -11,10 +11,6 @@ services:
       - "5000:8080"
     networks:
       - simracing-network
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
-    # restart: unless-stopped
 
   db:
     image: postgres
@@ -31,12 +27,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - simracing-network
-    # healthcheck:
-    #   test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
-    #   interval: 5s
-    #   timeout: 5s
-    #   retries: 10
-    #   start_period: 10s
 
   adminer:
     image: adminer

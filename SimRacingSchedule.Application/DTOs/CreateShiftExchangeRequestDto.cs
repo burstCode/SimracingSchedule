@@ -5,5 +5,4 @@ public record CreateShiftExchangeRequestDto(
     Guid TargetId,
     Guid RequesterShiftId,
     Guid TargetShiftId,
-    string? Message
-);
+    string? Message);

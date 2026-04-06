@@ -1,4 +1,5 @@
-// SimRacingSchedule.Infrastructure/Data/Configurations/EmployeeConfiguration.cs
+// Copyright (c) SimRacing Club. All rights reserved.
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SimRacingSchedule.Core.Entities;
@@ -9,43 +10,43 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.HasKey(e => e.Id);
+        _ = builder.HasKey(e => e.Id);
 
-        builder.HasIndex(e => e.Email).IsUnique();
-        builder.HasIndex(e => e.PhoneNumber).IsUnique();
+        _ = builder.HasIndex(e => e.Email).IsUnique();
+        _ = builder.HasIndex(e => e.PhoneNumber).IsUnique();
 
-        builder.Property(e => e.FirstName)
+        _ = builder.Property(e => e.FirstName)
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(e => e.LastName)
+        _ = builder.Property(e => e.LastName)
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(e => e.Patronymic)
+        _ = builder.Property(e => e.Patronymic)
             .HasMaxLength(100);
 
-        builder.Property(e => e.Email)
+        _ = builder.Property(e => e.Email)
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(e => e.PhoneNumber)
+        _ = builder.Property(e => e.PhoneNumber)
             .IsRequired()
             .HasMaxLength(20);
 
-        builder.Property(e => e.Position)
+        _ = builder.Property(e => e.Position)
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(e => e.Role)
+        _ = builder.Property(e => e.Role)
             .HasConversion<int>()
             .IsRequired();
 
-        builder.Property(e => e.IsActive)
+        _ = builder.Property(e => e.IsActive)
             .IsRequired()
             .HasDefaultValue(true);
 
-        builder.HasMany(e => e.Shifts)
+        _ = builder.HasMany(e => e.Shifts)
             .WithOne(s => s.Employee)
             .HasForeignKey(s => s.EmployeeId)
             .OnDelete(DeleteBehavior.Restrict);

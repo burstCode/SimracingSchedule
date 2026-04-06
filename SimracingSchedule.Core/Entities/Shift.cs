@@ -1,63 +1,72 @@
+// Copyright (c) SimRacing Club. All rights reserved.
 using SimRacingSchedule.Core.Enums;
 
 namespace SimRacingSchedule.Core.Entities;
 
+/// <summary>
+/// Объект смены.
+/// </summary>
 public class Shift
 {
-    public Guid Id { get; private set; }
-    public Guid EmployeeId { get; private set; }
-    public Employee Employee { get; private set; }
-    public DateTime StartTime { get; private set; }
-    public DateTime EndTime { get; private set; }
-    public ShiftType Type { get; private set; }
-    public ShiftStatus Status { get; private set; }
-    public string? Notes { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
+    private readonly List<ShiftExchangeRequest> m_SentExchangeRequests = new ();
+    private readonly List<ShiftExchangeRequest> m_ReceivedExchangeRequests = new ();
 
-    private readonly List<ShiftExchangeRequest> _sentExchangeRequests = new();
-    public IReadOnlyCollection<ShiftExchangeRequest> SentExchangeRequests => _sentExchangeRequests.AsReadOnly();
-
-    private readonly List<ShiftExchangeRequest> _receivedExchangeRequests = new();
-    public IReadOnlyCollection<ShiftExchangeRequest> ReceivedExchangeRequests => _receivedExchangeRequests.AsReadOnly();
-
-    // Статический словарь для получения времени смен
-    private static readonly Dictionary<ShiftType, (TimeSpan Start, TimeSpan End)> ShiftHours = new()
-    {
-        [ShiftType.Morning] = (TimeSpan.FromHours(10), TimeSpan.FromHours(14)),
-        [ShiftType.Day] = (TimeSpan.FromHours(14), TimeSpan.FromHours(18)),
-        [ShiftType.Evening] = (TimeSpan.FromHours(18), TimeSpan.FromHours(22)),
-        [ShiftType.FullDay] = (TimeSpan.FromHours(13), TimeSpan.FromHours(22))
-    };
-
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="Shift"/>.
+    /// </summary>
+    /// <param name="employeeId">Идентификатор сотрудника.</param>
+    /// <param name="date">Дата начала смены.</param>
+    /// <param name="type">Тип смены.</param>
+    /// <param name="notes">Заметки.</param>
     public Shift(
         Guid employeeId,
         DateTime date,
         ShiftType type,
         string? notes = null)
     {
-        if (!ShiftHours.ContainsKey(type))
+        Dictionary<ShiftType, (TimeSpan Start, TimeSpan End)> shiftHours = new ()
+        {
+            [ShiftType.Morning] = (TimeSpan.FromHours(10), TimeSpan.FromHours(14)),
+            [ShiftType.Day] = (TimeSpan.FromHours(14), TimeSpan.FromHours(18)),
+            [ShiftType.Evening] = (TimeSpan.FromHours(18), TimeSpan.FromHours(22)),
+            [ShiftType.FullDay] = (TimeSpan.FromHours(13), TimeSpan.FromHours(22)),
+        };
+
+        if (!shiftHours.ContainsKey(type))
+        {
             throw new ArgumentException($"Unknown shift type: {type}", nameof(type));
+        }
 
-        var hours = ShiftHours[type];
-        StartTime = date.Date + hours.Start;
-        EndTime = date.Date + hours.End;
+        (TimeSpan Start, TimeSpan End) hours = shiftHours[type];
+        this.StartTime = date.Date + hours.Start;
+        this.EndTime = date.Date + hours.End;
 
-        if (StartTime >= EndTime)
+        if (this.StartTime >= this.EndTime)
+        {
             throw new ArgumentException("Start time must be before end time");
+        }
 
-        if (StartTime < DateTime.UtcNow.Date)
+        if (this.StartTime < DateTime.UtcNow.Date)
+        {
             throw new ArgumentException("Cannot create shift in the past");
+        }
 
-        Id = Guid.NewGuid();
-        EmployeeId = employeeId;
-        Type = type;
-        Status = ShiftStatus.Scheduled;
-        Notes = notes;
-        CreatedAt = DateTime.UtcNow;
+        this.Id = Guid.NewGuid();
+        this.EmployeeId = employeeId;
+        this.Type = type;
+        this.Status = ShiftStatus.Scheduled;
+        this.Notes = notes;
+        this.CreatedAt = DateTime.UtcNow;
     }
 
-    // Альтернативный конструктор для кастомного времени
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="Shift"/>.
+    /// </summary>
+    /// <param name="employeeId">Идентификатор сотрудника.</param>
+    /// <param name="startTime">Время начала смены.</param>
+    /// <param name="endTime">Время окончания смены.</param>
+    /// <param name="type">Тип смены.</param>
+    /// <param name="notes">Заметки.</param>
     public Shift(
         Guid employeeId,
         DateTime startTime,
@@ -66,62 +75,137 @@ public class Shift
         string? notes = null)
     {
         if (startTime >= endTime)
+        {
             throw new ArgumentException("Start time must be before end time");
+        }
 
         if (startTime < DateTime.UtcNow.Date)
+        {
             throw new ArgumentException("Cannot create shift in the past");
+        }
 
-        Id = Guid.NewGuid();
-        EmployeeId = employeeId;
-        StartTime = startTime;
-        EndTime = endTime;
-        Type = type;
-        Status = ShiftStatus.Scheduled;
-        Notes = notes;
-        CreatedAt = DateTime.UtcNow;
+        this.Id = Guid.NewGuid();
+        this.EmployeeId = employeeId;
+        this.StartTime = startTime;
+        this.EndTime = endTime;
+        this.Type = type;
+        this.Status = ShiftStatus.Scheduled;
+        this.Notes = notes;
+        this.CreatedAt = DateTime.UtcNow;
     }
 
+    /// <summary>
+    /// Получает идентификатор смены.
+    /// </summary>
+    public Guid Id { get; private set; }
+
+    /// <summary>
+    /// Получает идентификатор сотрудника.
+    /// </summary>
+    public Guid EmployeeId { get; private set; }
+
+    /// <summary>
+    /// Получает объект сотрудника.
+    /// </summary>
+    public Employee? Employee { get; }
+
+    /// <summary>
+    /// Получает время начала смены.
+    /// </summary>
+    public DateTime StartTime { get; private set; }
+
+    /// <summary>
+    /// Получает время окончания смены.
+    /// </summary>
+    public DateTime EndTime { get; private set; }
+
+    /// <summary>
+    /// Получает тип смены.
+    /// </summary>
+    public ShiftType Type { get; private set; }
+
+    /// <summary>
+    /// Получает статус смены.
+    /// </summary>
+    public ShiftStatus Status { get; private set; }
+
+    /// <summary>
+    /// Получает заметки.
+    /// </summary>
+    public string? Notes { get; private set; }
+
+    /// <summary>
+    /// Получает время создания.
+    /// </summary>
+    public DateTime CreatedAt { get; private set; }
+
+    /// <summary>
+    /// Получает время обновления.
+    /// </summary>
+    public DateTime? UpdatedAt { get; private set; }
+
+    /// <summary>
+    /// Получает коллекция отправленных запросов на обмен смены.
+    /// </summary>
+    public IReadOnlyCollection<ShiftExchangeRequest> SentExchangeRequests => this.m_SentExchangeRequests.AsReadOnly();
+
+    /// <summary>
+    /// Получает Получает коллекция полученных запросов на обмен смены.
+    /// </summary>
+    public IReadOnlyCollection<ShiftExchangeRequest> ReceivedExchangeRequests => this.m_ReceivedExchangeRequests.AsReadOnly();
+
+    /// <summary>
+    /// Начать смену.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Если смена уже начата или окончена.</exception>
     public void Start()
     {
-        if (Status != ShiftStatus.Scheduled)
-            throw new InvalidOperationException($"Cannot start shift with status {Status}");
+        if (this.Status != ShiftStatus.Scheduled)
+        {
+            throw new InvalidOperationException($"Cannot start shift with status {this.Status}");
+        }
 
-        if (StartTime > DateTime.UtcNow)
+        if (this.StartTime > DateTime.UtcNow)
+        {
             throw new InvalidOperationException("Cannot start shift before its scheduled time");
+        }
 
-        Status = ShiftStatus.InProgress;
-        UpdatedAt = DateTime.UtcNow;
+        this.Status = ShiftStatus.InProgress;
+        this.UpdatedAt = DateTime.UtcNow;
     }
 
+    /// <summary>
+    /// Начать смену.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Если смена уже окончена.</exception>
     public void Complete()
     {
-        if (Status != ShiftStatus.InProgress && Status != ShiftStatus.Scheduled)
-            throw new InvalidOperationException($"Cannot complete shift with status {Status}");
+        if (this.Status != ShiftStatus.InProgress && this.Status != ShiftStatus.Scheduled)
+        {
+            throw new InvalidOperationException($"Cannot complete shift with status {this.Status}");
+        }
 
-        if (EndTime > DateTime.UtcNow && Status == ShiftStatus.Scheduled)
+        if (this.EndTime > DateTime.UtcNow && this.Status == ShiftStatus.Scheduled)
+        {
             throw new InvalidOperationException("Cannot complete shift that hasn't started yet");
+        }
 
-        Status = ShiftStatus.Completed;
-        UpdatedAt = DateTime.UtcNow;
+        this.Status = ShiftStatus.Completed;
+        this.UpdatedAt = DateTime.UtcNow;
     }
 
+    /// <summary>
+    /// Отменить смену.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Если смена уже началась.</exception>
     public void Cancel()
     {
-        if (StartTime <= DateTime.UtcNow)
+        if (this.StartTime <= DateTime.UtcNow)
+        {
             throw new InvalidOperationException("Cannot cancel shift that has already started");
+        }
 
-        Status = ShiftStatus.Cancelled;
-        UpdatedAt = DateTime.UtcNow;
-    }
-
-    public static TimeSpan GetShiftDuration(ShiftType type)
-    {
-        var hours = ShiftHours[type];
-        return hours.End - hours.Start;
-    }
-
-    public static (TimeSpan Start, TimeSpan End) GetShiftHours(ShiftType type)
-    {
-        return ShiftHours[type];
+        this.Status = ShiftStatus.Cancelled;
+        this.UpdatedAt = DateTime.UtcNow;
     }
 }

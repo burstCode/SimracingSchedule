@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SimRacingSchedule.Application.DTOs;
 using SimRacingSchedule.Application.Commands.ShiftExchange;
+using SimRacingSchedule.Application.DTOs;
 using SimRacingSchedule.Application.Queries.ShiftExchange;
 
 namespace SimRacingSchedule.Api.Controllers;
@@ -11,80 +11,85 @@ namespace SimRacingSchedule.Api.Controllers;
 [Produces("application/json")]
 public class ShiftExchangeController : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly ILogger<ShiftExchangeController> _logger;
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+    private readonly IMediator m_Mediator;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
+    private readonly ILogger<ShiftExchangeController> m_Logger;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 
     public ShiftExchangeController(IMediator mediator, ILogger<ShiftExchangeController> logger)
     {
-        _mediator = mediator;
-        _logger = logger;
+        this.m_Mediator = mediator;
+        this.m_Logger = logger;
     }
 
     /// <summary>
     /// Получить все ожидающие запросы на обмен для сотрудника
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [HttpGet("pending/{employeeId}")]
     [ProducesResponseType(typeof(IEnumerable<ShiftExchangeRequestDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPendingRequests(Guid employeeId)
     {
-        GetPendingExchangesQuery query = new(employeeId);
-        var requests = await _mediator.Send(query);
-        return Ok(requests);
+        GetPendingExchangesQuery query = new (employeeId);
+        IEnumerable<ShiftExchangeRequestDto> requests = await this.m_Mediator.Send(query);
+        return this.Ok(requests);
     }
 
     /// <summary>
-    /// Создать запрос на обмен сменами
+    /// Создать запрос на обмен сменами.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [HttpPost("create")]
     [ProducesResponseType(typeof(CreateShiftExchangeResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateExchangeRequest([FromBody] CreateShiftExchangeRequestDto request)
     {
-        var command = new CreateShiftExchangeCommand(
+        CreateShiftExchangeCommand command = new CreateShiftExchangeCommand(
             request.RequesterId,
             request.TargetId,
             request.RequesterShiftId,
             request.TargetShiftId,
-            request.Message
-        );
+            request.Message);
 
-        var result = await _mediator.Send(command);
+        CreateShiftExchangeResult result = await this.m_Mediator.Send(command);
 
         if (!result.Success)
         {
-            return BadRequest(new { error = result.ErrorMessage });
+            return this.BadRequest(new { error = result.ErrorMessage });
         }
 
-        _logger.LogInformation("Created shift exchange request {RequestId} from {RequesterId} to {TargetId}",
+        this.m_Logger.LogInformation("Created shift exchange request {RequestId} from {RequesterId} to {TargetId}",
             result.RequestId, request.RequesterId, request.TargetId);
 
-        return Ok(result);
+        return this.Ok(result);
     }
 
     /// <summary>
     /// Ответить на запрос обмена
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [HttpPost("respond")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RespondToExchange([FromBody] RespondToShiftExchangeRequestDto request)
     {
-        var command = new RespondToShiftExchangeCommand(
+        RespondToShiftExchangeCommand command = new RespondToShiftExchangeCommand(
             request.RequestId,
             request.Approve,
-            request.Message
-        );
+            request.Message);
 
-        var result = await _mediator.Send(command);
+        RespondToShiftExchangeResult result = await this.m_Mediator.Send(command);
 
         if (!result.Success)
         {
-            return BadRequest(new { error = result.ErrorMessage });
+            return this.BadRequest(new { error = result.ErrorMessage });
         }
 
-        _logger.LogInformation("Responded to exchange request {RequestId} with {Action}",
+        this.m_Logger.LogInformation("Responded to exchange request {RequestId} with {Action}",
             request.RequestId, request.Approve ? "APPROVE" : "REJECT");
 
-        return Ok(new { message = "Ответ успешно обработан" });
+        return this.Ok(new { message = "Ответ успешно обработан" });
     }
 }
