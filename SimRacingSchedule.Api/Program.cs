@@ -52,4 +52,6 @@ using (IServiceScope scope = app.Services.CreateScope())
     }
 }
 
+// TODO: зарегистрировать сервис для отправки уведомлений в Telegram.
+
 app.Run();
