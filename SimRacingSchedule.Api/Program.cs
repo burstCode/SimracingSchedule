@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using SimRacingSchedule.Application.Commands.ShiftExchange;
 using SimRacingSchedule.Application.Mappings;
+using SimRacingSchedule.Application.Telegram.Extensions;
+using SimRacingSchedule.Application.Telegram.Interfaces;
 using SimRacingSchedule.Infrastructure;
 using SimRacingSchedule.Infrastructure.Data;
+using SimRacingSchedule.Infrastructure.Repositories;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,9 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateShiftExchangeCommandHandler).Assembly));
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
+
+builder.Services.AddTelegramServices(builder.Configuration);
+builder.Services.AddScoped<ITelegramUserSettingsRepository, TelegramUserSettingsRepository>();
 
 WebApplication app = builder.Build();
 
