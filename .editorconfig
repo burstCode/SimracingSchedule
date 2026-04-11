@@ -85,7 +85,7 @@ csharp_style_expression_bodied_constructors = false:warning
 csharp_style_expression_bodied_indexers = false:warning
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:warning
-csharp_style_expression_bodied_methods = when_on_single_line:silent
+csharp_style_expression_bodied_methods = when_on_single_line:warning
 csharp_style_expression_bodied_operators = false:warning
 csharp_style_expression_bodied_properties = when_on_single_line:silent
 
@@ -811,3 +811,6 @@ dotnet_diagnostic.SA1513.severity = none         # Closing brace should be follo
 dotnet_diagnostic.SA1508.severity = none         # Closing braces should not be preceded by blank line
 dotnet_diagnostic.SA1505.severity = none         # Opening braces should not be followed by blank line
 dotnet_diagnostic.SA1509.severity = none         # Opening braces should not be preceded by blank line
+
+# IDE0022: Use expression body for method
+dotnet_diagnostic.IDE0022.severity = warning

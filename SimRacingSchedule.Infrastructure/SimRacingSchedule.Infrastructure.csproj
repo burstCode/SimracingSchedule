@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SimRacingSchedule.Application.Telegram\SimRacingSchedule.Application.Telegram.csproj" />
     <ProjectReference Include="..\SimRacingSchedule.Core\SimRacingSchedule.Core.csproj" />
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
