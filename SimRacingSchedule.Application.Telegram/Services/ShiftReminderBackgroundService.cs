@@ -41,9 +41,10 @@ public class ShiftReminderBackgroundService : BackgroundService
         }
     }
 
-    private async Task CheckAndSendReminders(CancellationToken ct)
-    {
-        using IServiceScope scope = m_ServiceProvider.CreateScope();
+    // SimRacingSchedule.Application.Telegram/Background/ShiftReminderBackgroundService.cs
+private async Task CheckAndSendReminders(CancellationToken ct)
+{
+    using IServiceScope scope = m_ServiceProvider.CreateScope();
 
         ITelegramUserSettingsRepository settingsRepository = scope.ServiceProvider.GetRequiredService<ITelegramUserSettingsRepository>();
         IShiftRepository shiftRepository = scope.ServiceProvider.GetRequiredService<IShiftRepository>();
@@ -51,25 +52,41 @@ public class ShiftReminderBackgroundService : BackgroundService
         ITelegramNotificationService notificationService = scope.ServiceProvider.GetRequiredService<ITelegramNotificationService>();
 
         IEnumerable<TelegramUserSettings> allSettings = await settingsRepository.GetAllEnabledAsync(ct);
-        
-        foreach (TelegramUserSettings settings in allSettings)
-        {
+    m_Logger.LogInformation("🔍 Checking reminders for {Count} enabled users", allSettings.Count());
+    
+    foreach (TelegramUserSettings settings in allSettings)
+    {
             Employee? employee = await employeeRepository.GetByIdAsync(settings.EmployeeId, ct);
-            if (employee == null) continue;
+        if (employee == null)
+        {
+            m_Logger.LogWarning("Employee {EmployeeId} not found for settings {SettingsId}", settings.EmployeeId, settings.Id);
+            continue;
+        }
 
-            // Получаем ближайшие смены сотрудника
+            // Получаем ближайшие смены сотрудника (сейчас + 24 часа)
             IEnumerable<Shift> upcomingShifts = await shiftRepository.GetByEmployeeIdAsync(
-                employee.Id,
-                DateTime.UtcNow,
-                DateTime.UtcNow.AddDays(7), ct);
+            employee.Id,
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddDays(1), ct); // Проверяем только следующие 24 часа
 
-            foreach (Shift shift in upcomingShifts)
-            {
+        m_Logger.LogInformation("📅 Employee {EmployeeName} has {ShiftCount} upcoming shifts in next 24 hours", 
+            $"{employee.FirstName} {employee.LastName}", upcomingShifts.Count());
+
+        foreach (Shift shift in upcomingShifts)
+        {
                 double minutesUntilShift = (shift.StartTime - DateTime.UtcNow).TotalMinutes;
+            
+            m_Logger.LogInformation("⏰ Shift at {ShiftTime} starts in {Minutes} minutes. Notification threshold: {Threshold} minutes",
+                shift.StartTime, minutesUntilShift, settings.NotificationMinutesBefore);
+            
+            // Проверяем, нужно ли отправить напоминание (в пределах 5 минут от порога)
+            if (minutesUntilShift <= settings.NotificationMinutesBefore && 
+                minutesUntilShift > settings.NotificationMinutesBefore - 10)
+            {
+                m_Logger.LogInformation("📨 Sending reminder to {EmployeeName} for shift at {ShiftTime}", 
+                    $"{employee.FirstName} {employee.LastName}", shift.StartTime);
                 
-                // Проверяем, нужно ли отправить напоминание
-                if (minutesUntilShift <= settings.NotificationMinutesBefore && 
-                    minutesUntilShift > settings.NotificationMinutesBefore - 5) // В пределах 5 минут
+                try
                 {
                     await notificationService.SendShiftReminderAsync(
                         shift, 
@@ -77,12 +94,16 @@ public class ShiftReminderBackgroundService : BackgroundService
                         settings.NotificationMinutesBefore, 
                         ct);
                     
-                    m_Logger.LogInformation(
-                        "Sent shift reminder to {EmployeeName} for shift at {ShiftTime}",
-                        $"{employee.FirstName} {employee.LastName}",
-                        shift.StartTime);
+                    m_Logger.LogInformation("✅ Reminder sent successfully to {EmployeeName}", 
+                        $"{employee.FirstName} {employee.LastName}");
+                }
+                catch (Exception ex)
+                {
+                    m_Logger.LogError(ex, "❌ Failed to send reminder to {EmployeeName}", 
+                        $"{employee.FirstName} {employee.LastName}");
                 }
             }
         }
     }
+}
 }

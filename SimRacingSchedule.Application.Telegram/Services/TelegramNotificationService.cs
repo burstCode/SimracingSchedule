@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using SimRacingSchedule.Application.Telegram.Interfaces;
 using SimRacingSchedule.Application.Telegram.Models;
 using SimRacingSchedule.Core.Entities;
+using SimRacingSchedule.Core.Enums;
 using SimRacingSchedule.Core.Extensions;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -32,17 +33,28 @@ public class TelegramNotificationService : ITelegramNotificationService
         if (settings == null || !settings.IsEnabled || !settings.NotifyShiftReminder)
             return;
 
-        DateTime localStartTime = ConvertToLocalTime(shift.StartTime, settings.TimeZone);
+        // DateTime localStartTime = ConvertToLocalTime(shift.StartTime, settings.TimeZone);
+        // DateTime localEndTime = ConvertToLocalTime(shift.EndTime, settings.TimeZone);
+
+            // Форматируем время правильно
+        // string startTimeStr = localStartTime.ToString("HH:mm");
+        // string endTimeStr = localEndTime.ToString("HH:mm");
+        // string dateStr = localStartTime.ToString("dd.MM.yyyy");
+
+        // Для FullDay смены показываем правильное время
+        string shiftHours = shift.Type == ShiftType.FullDay ? "13:00-22:00" : shift.Type.GetDisplayName();
 
         string message = $"""
-        ⏰ *Напоминание о смене!*
+        ⏰ *НАПОМИНАНИЕ О СМЕНЕ!*
         
         👤 *Сотрудник:* {employee.LastName} {employee.FirstName}
-        📅 *Дата:* {localStartTime:dd.MM.yyyy}
-        🕐 *Время:* {localStartTime:HH:mm} - {ConvertToLocalTime(shift.EndTime, settings.TimeZone):HH:mm}
+        📅 *Дата:* {shift.StartTime.ToString("dd.MM.yyyy")}
+        🕐 *Время:* {shift.StartTime.ToString("HH:mm")} - {shift.EndTime.ToString("HH:mm")} (МСК)
         📋 *Тип смены:* {shift.Type.GetDisplayName()}
         
         ⚠️ *До начала смены осталось {minutesBefore} минут!*
+        
+        Хорошей смены! 🏎️
         """;
 
         await SendMessageAsync(settings.TelegramChatId, message, ct);
@@ -113,13 +125,11 @@ public class TelegramNotificationService : ITelegramNotificationService
         • 📅 *О начале смен:* {(settings.NotifyShiftStart ? "✅ Да" : "❌ Нет")}
         • 🔄 *Об обмене сменами:* {(settings.NotifyShiftExchange ? "✅ Да" : "❌ Нет")}
         • ⏰ *Напоминания:* {(settings.NotifyShiftReminder ? "✅ Да" : "❌ Нет")}
-        • 🌍 *Часовой пояс:* {settings.TimeZone}
         
         *Изменить настройки:*
         /enable - включить уведомления
         /disable - отключить уведомления
         /time [минуты] - изменить время напоминания (например /time 30)
-        /timezone [зона] - изменить часовой пояс (например /timezone Europe/Moscow)
         """;
 
         InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
@@ -208,11 +218,24 @@ public class TelegramNotificationService : ITelegramNotificationService
     }
 
     private DateTime ConvertToLocalTime(DateTime utcTime, string? timeZoneId)
+{
+    if (string.IsNullOrEmpty(timeZoneId))
+        timeZoneId = "Europe/Moscow";
+    
+    try
     {
-        if (string.IsNullOrEmpty(timeZoneId))
-            timeZoneId = "Europe/Moscow";
-
         TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
-        return TimeZoneInfo.ConvertTimeFromUtc(utcTime, tz);
+        DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tz);
+        
+        m_Logger.LogDebug("Converted {UtcTime} UTC to {LocalTime} {TimeZone}", 
+            utcTime, localTime, timeZoneId);
+        
+        return localTime;
     }
+    catch (Exception ex)
+    {
+        m_Logger.LogError(ex, "Failed to convert time for timezone {TimeZone}", timeZoneId);
+        return utcTime; // fallback to UTC
+    }
+}
 }

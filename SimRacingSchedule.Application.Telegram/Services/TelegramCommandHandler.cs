@@ -261,7 +261,6 @@ public class TelegramCommandHandler
             ⏰ *Напоминание за:* {settings.NotificationMinutesBefore} мин.
             📅 *О начале смен:* {(settings.NotifyShiftStart ? "Да" : "Нет")}
             🔄 *Об обмене:* {(settings.NotifyShiftExchange ? "Да" : "Нет")}
-            🌍 *Часовой пояс:* {settings.TimeZone}
             """,
             parseMode: ParseMode.Markdown,
             cancellationToken: ct);
@@ -280,12 +279,10 @@ public class TelegramCommandHandler
             /enable - включить уведомления
             /disable - отключить уведомления
             /time [минуты] - изменить время напоминания
-            /timezone [зона] - изменить часовой пояс
             /help - показать эту справку
             
             *Примеры:*
             /time 30 - напоминать за 30 минут
-            /timezone Europe/Moscow - установить московское время
             """,
             parseMode: ParseMode.Markdown,
             cancellationToken: ct);
