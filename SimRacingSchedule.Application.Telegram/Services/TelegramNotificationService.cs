@@ -61,23 +61,34 @@ public class TelegramNotificationService : ITelegramNotificationService
     }
 
     public async Task SendShiftExchangeNotificationAsync(ShiftExchangeRequest request, string action, CancellationToken ct = default)
-    {
+{
+    m_Logger.LogInformation("📨 Sending exchange notification. Action: {Action}, RequesterId: {RequesterId}, TargetId: {TargetId}", 
+        action, request.RequesterId, request.TargetId);
+
         // Уведомление для requester
         TelegramUserSettings? requesterSettings = await m_SettingsRepository.GetByEmployeeIdAsync(request.RequesterId, ct);
-        if (requesterSettings?.IsEnabled == true && requesterSettings.NotifyShiftExchange)
-        {
+    m_Logger.LogInformation("Requester settings: Found={Found}, Enabled={Enabled}, ChatId={ChatId}", 
+        requesterSettings != null, requesterSettings?.IsEnabled, requesterSettings?.TelegramChatId);
+    
+    if (requesterSettings?.IsEnabled == true && requesterSettings.NotifyShiftExchange)
+    {
             string message = GetShiftExchangeMessage(request, action, isForRequester: true);
-            await SendMessageAsync(requesterSettings.TelegramChatId, message, ct);
-        }
+        await SendMessageAsync(requesterSettings.TelegramChatId, message, ct);
+        m_Logger.LogInformation("✅ Message sent to requester {ChatId}", requesterSettings.TelegramChatId);
+    }
 
         // Уведомление для target
         TelegramUserSettings? targetSettings = await m_SettingsRepository.GetByEmployeeIdAsync(request.TargetId, ct);
-        if (targetSettings?.IsEnabled == true && targetSettings.NotifyShiftExchange)
-        {
+    m_Logger.LogInformation("Target settings: Found={Found}, Enabled={Enabled}, ChatId={ChatId}", 
+        targetSettings != null, targetSettings?.IsEnabled, targetSettings?.TelegramChatId);
+    
+    if (targetSettings?.IsEnabled == true && targetSettings.NotifyShiftExchange)
+    {
             string message = GetShiftExchangeMessage(request, action, isForRequester: false);
-            await SendMessageAsync(targetSettings.TelegramChatId, message, ct);
-        }
+        await SendMessageAsync(targetSettings.TelegramChatId, message, ct);
+        m_Logger.LogInformation("✅ Message sent to target {ChatId}", targetSettings.TelegramChatId);
     }
+}
 
     public async Task SendWelcomeMessageAsync(long chatId, string employeeName, CancellationToken ct = default)
     {
@@ -87,7 +98,7 @@ public class TelegramNotificationService : ITelegramNotificationService
         Привет, {employeeName}!
         
         Я буду присылать тебе уведомления о:
-        • 📅 Начале смен (за час до начала)
+        • 📅 Начале смен
         • 🔄 Запросах на обмен сменами
         • ⏰ Напоминаниях о предстоящих сменах
         
@@ -96,7 +107,7 @@ public class TelegramNotificationService : ITelegramNotificationService
         • /help - получить помощь
         • /status - проверить статус
         
-        Время уведомлений по умолчанию: за 60 минут до смены
+        Время уведомлений по умолчанию: за 1 час до смены
         """;
 
         InlineKeyboardMarkup inlineKeyboard = new(

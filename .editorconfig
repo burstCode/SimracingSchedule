@@ -1,4 +1,8 @@
-# Remove the line below if you want to inherit .editorconfig settings from higher directories
+# ============================================
+# SimRacingSchedule - Code Analysis Configuration
+# Единый источник для Roslyn, StyleCop и Sonar analyzers
+# ============================================
+
 root = true
 
 # C# files
@@ -6,177 +10,85 @@ root = true
 
 #### Core EditorConfig Options ####
 
-# Indentation and spacing
 indent_size = 4
 indent_style = space
 tab_width = 4
-
-# New line preferences
 end_of_line = crlf
 insert_final_newline = false
+charset = utf-8
 
 #### .NET Coding Conventions ####
 
-# Organize usings
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = false
 file_header_template = unset
 
-# this. and Me. preferences
 dotnet_style_qualification_for_event = false
 dotnet_style_qualification_for_field = false
 dotnet_style_qualification_for_method = false
 dotnet_style_qualification_for_property = false
 
-# Language keywords vs BCL types preferences
-dotnet_style_predefined_type_for_locals_parameters_members = true:warning
-dotnet_style_predefined_type_for_member_access = true:warning
+dotnet_style_predefined_type_for_locals_parameters_members = true
+dotnet_style_predefined_type_for_member_access = true
 
-# Parentheses preferences
-dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
-dotnet_style_parentheses_in_other_operators = never_if_unnecessary
-dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity
 
-# Modifier preferences
 dotnet_style_require_accessibility_modifiers = for_non_interface_members
 
-# Expression-level preferences
 dotnet_style_coalesce_expression = true
-dotnet_style_collection_initializer = true:silent
-dotnet_style_explicit_tuple_names = true:warning
-dotnet_style_namespace_match_folder = true
 dotnet_style_null_propagation = true
-dotnet_style_object_initializer = true:silent
-dotnet_style_operator_placement_when_wrapping = beginning_of_line
+dotnet_style_object_initializer = true
+dotnet_style_collection_initializer = true
+dotnet_style_explicit_tuple_names = true
 dotnet_style_prefer_auto_properties = true
-dotnet_style_prefer_compound_assignment = true
 dotnet_style_prefer_conditional_expression_over_assignment = true
 dotnet_style_prefer_conditional_expression_over_return = true
-dotnet_style_prefer_inferred_anonymous_type_member_names = true
-dotnet_style_prefer_inferred_tuple_names = true
-dotnet_style_prefer_is_null_check_over_reference_equality_method = true
-dotnet_style_prefer_simplified_boolean_expressions = true:silent
-dotnet_style_prefer_simplified_interpolation = true
 
-# Field preferences
-dotnet_style_readonly_field = true:silent
-
-# Parameter preferences
 dotnet_code_quality_unused_parameters = all
-
-# Suppression preferences
-dotnet_remove_unnecessary_suppression_exclusions = none
-
-# New line preferences
-dotnet_style_allow_multiple_blank_lines_experimental = true
-dotnet_style_allow_statement_immediately_after_block_experimental = true
 
 #### C# Coding Conventions ####
 
-# var preferences
-csharp_style_var_elsewhere = false:warning
-csharp_style_var_for_built_in_types = false:warning
-csharp_style_var_when_type_is_apparent = false:warning
+csharp_style_var_elsewhere = false
+csharp_style_var_for_built_in_types = false
+csharp_style_var_when_type_is_apparent = false
 
-# Expression-bodied members
-csharp_style_expression_bodied_accessors = when_on_single_line:warning
-csharp_style_expression_bodied_constructors = false:warning
-csharp_style_expression_bodied_indexers = false:warning
-csharp_style_expression_bodied_lambdas = true:silent
-csharp_style_expression_bodied_local_functions = false:warning
-csharp_style_expression_bodied_methods = when_on_single_line:warning
-csharp_style_expression_bodied_operators = false:warning
-csharp_style_expression_bodied_properties = when_on_single_line:silent
+csharp_style_expression_bodied_accessors = when_on_single_line
+csharp_style_expression_bodied_methods = when_on_single_line
 
-# Pattern matching preferences
-csharp_style_pattern_matching_over_as_with_null_check = false:warning
-csharp_style_pattern_matching_over_is_with_cast_check = false:warning
-csharp_style_prefer_not_pattern = true:suggestion
-csharp_style_prefer_pattern_matching = true:silent
-csharp_style_prefer_switch_expression = false:warning
+csharp_style_pattern_matching_over_as_with_null_check = true
+csharp_style_pattern_matching_over_is_with_cast_check = true
+csharp_style_prefer_switch_expression = true
 
-# Null-checking preferences
-csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_conditional_delegate_call = true
 
-# Modifier preferences
-csharp_prefer_static_local_function = true:silent
-csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async
+csharp_prefer_braces = true
+csharp_prefer_simple_using_statement = true
 
-# Code-block preferences
-csharp_prefer_braces = true:suggestion
-csharp_prefer_simple_using_statement = true:suggestion
+csharp_using_directive_placement = outside_namespace
 
-# Expression-level preferences
-csharp_prefer_simple_default_expression = true:suggestion
-csharp_style_deconstructed_variable_declaration = true:suggestion
-csharp_style_implicit_object_creation_when_type_is_apparent = false:warning
-csharp_style_inlined_variable_declaration = false:warning
-csharp_style_pattern_local_over_anonymous_function = true
-csharp_style_prefer_index_operator = false:warning
-csharp_style_prefer_range_operator = false:warning
-csharp_style_throw_expression = false:suggestion
-csharp_style_unused_value_assignment_preference = discard_variable:suggestion
-csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
-
-# 'using' directive preferences
-csharp_using_directive_placement = outside_namespace:warning
-
-# New line preferences
-csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:silent
-csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:silent
-csharp_style_allow_embedded_statements_on_same_line_experimental = true:silent
+csharp_style_throw_expression = true
 
 #### C# Formatting Rules ####
 
-# New line preferences
 csharp_new_line_before_catch = true
 csharp_new_line_before_else = true
 csharp_new_line_before_finally = true
-csharp_new_line_before_members_in_anonymous_types = true
-csharp_new_line_before_members_in_object_initializers = true
 csharp_new_line_before_open_brace = all
-csharp_new_line_between_query_expression_clauses = true
 
-# Indentation preferences
 csharp_indent_block_contents = true
 csharp_indent_braces = false
 csharp_indent_case_contents = true
-csharp_indent_case_contents_when_block = true
-csharp_indent_labels = no_change
 csharp_indent_switch_labels = true
 
-# Space preferences
 csharp_space_after_cast = false
-csharp_space_after_colon_in_inheritance_clause = true
 csharp_space_after_comma = true
-csharp_space_after_dot = false
-csharp_space_after_keywords_in_control_flow_statements = true
-csharp_space_after_semicolon_in_for_statement = true
 csharp_space_around_binary_operators = before_and_after
-csharp_space_around_declaration_statements = false
-csharp_space_before_colon_in_inheritance_clause = true
-csharp_space_before_comma = false
-csharp_space_before_dot = false
-csharp_space_before_open_square_brackets = false
-csharp_space_before_semicolon_in_for_statement = false
-csharp_space_between_empty_square_brackets = false
-csharp_space_between_method_call_empty_parameter_list_parentheses = false
-csharp_space_between_method_call_name_and_opening_parenthesis = false
-csharp_space_between_method_call_parameter_list_parentheses = false
-csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
-csharp_space_between_method_declaration_name_and_open_parenthesis = false
-csharp_space_between_method_declaration_parameter_list_parentheses = false
-csharp_space_between_parentheses = false
-csharp_space_between_square_brackets = false
 
-# Wrapping preferences
 csharp_preserve_single_line_blocks = true
-csharp_preserve_single_line_statements = false
 
-#### Naming styles ####
-
-# Naming rules
+#### Naming Conventions ####
 
 dotnet_naming_rule.interface_should_be_begins_with_i.severity = warning
 dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
@@ -186,631 +98,189 @@ dotnet_naming_rule.types_should_be_pascal_case.severity = warning
 dotnet_naming_rule.types_should_be_pascal_case.symbols = types
 dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
 
-dotnet_naming_rule.struct_should_be_pascal_case.severity = warning
-dotnet_naming_rule.struct_should_be_pascal_case.symbols = struct
-dotnet_naming_rule.struct_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.private_or_internal_field_should_be_m_pascalcase.severity = none
 
-dotnet_naming_rule.class_should_be_pascal_case.severity = warning
-dotnet_naming_rule.class_should_be_pascal_case.symbols = class
-dotnet_naming_rule.class_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.enum_should_be_pascal_case.severity = warning
-dotnet_naming_rule.enum_should_be_pascal_case.symbols = enum
-dotnet_naming_rule.enum_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.method_should_be_pascal_case.severity = warning
-dotnet_naming_rule.method_should_be_pascal_case.symbols = method
-dotnet_naming_rule.method_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.private_method_should_be_pascal_case.severity = warning
-dotnet_naming_rule.private_method_should_be_pascal_case.symbols = private_method
-dotnet_naming_rule.private_method_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.abstract_method_should_be_pascal_case.severity = warning
-dotnet_naming_rule.abstract_method_should_be_pascal_case.symbols = abstract_method
-dotnet_naming_rule.abstract_method_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.static_method_should_be_pascal_case.severity = warning
-dotnet_naming_rule.static_method_should_be_pascal_case.symbols = static_method
-dotnet_naming_rule.static_method_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.property_should_be_pascal_case.severity = warning
-dotnet_naming_rule.property_should_be_pascal_case.symbols = property
-dotnet_naming_rule.property_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.public_or_protected_field_should_be_pascal_case.severity = warning
-dotnet_naming_rule.public_or_protected_field_should_be_pascal_case.symbols = public_or_protected_field
-dotnet_naming_rule.public_or_protected_field_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.static_field_should_be_pascal_case.severity = warning
-dotnet_naming_rule.static_field_should_be_pascal_case.symbols = static_field
-dotnet_naming_rule.static_field_should_be_pascal_case.style = pascal_case
-
-dotnet_naming_rule.private_or_internal_field_should_be_m_pascalcase.severity = warning
+# Allow underscore prefix for private fields (SA1309)
+dotnet_diagnostic.SA1309.severity = none
 dotnet_naming_rule.private_or_internal_field_should_be_m_pascalcase.symbols = private_or_internal_field
 dotnet_naming_rule.private_or_internal_field_should_be_m_pascalcase.style = m_pascalcase
 
-dotnet_naming_rule.private_or_internal_static_field_should_be_m_pascalcase.severity = warning
-dotnet_naming_rule.private_or_internal_static_field_should_be_m_pascalcase.symbols = private_or_internal_static_field
-dotnet_naming_rule.private_or_internal_static_field_should_be_m_pascalcase.style = m_pascalcase
+dotnet_naming_rule.parameter_should_be_camelcase.severity = silent
+dotnet_naming_rule.parameter_should_be_camelcase.symbols = parameter
+dotnet_naming_rule.parameter_should_be_camelcase.style = camelcase
 
-dotnet_naming_rule.delegate_should_be_on_pascalcase_delegate.severity = warning
-dotnet_naming_rule.delegate_should_be_on_pascalcase_delegate.symbols = delegate
-dotnet_naming_rule.delegate_should_be_on_pascalcase_delegate.style = on_pascalcase_delegate
-
-dotnet_naming_rule.event_should_be_onpascalcase.severity = warning
-dotnet_naming_rule.event_should_be_onpascalcase.symbols = event
-dotnet_naming_rule.event_should_be_onpascalcase.style = onpascalcase
-
-dotnet_naming_rule.parameter_should_be__pascalcase.severity = suggestion
-dotnet_naming_rule.parameter_should_be__pascalcase.symbols = parameter
-dotnet_naming_rule.parameter_should_be__pascalcase.style = _pascalcase
-
-dotnet_naming_rule.local_variable_should_be_camelcase.severity = suggestion
+dotnet_naming_rule.local_variable_should_be_camelcase.severity = silent
 dotnet_naming_rule.local_variable_should_be_camelcase.symbols = local_variable
 dotnet_naming_rule.local_variable_should_be_camelcase.style = camelcase
 
-# Symbol specifications
-
-dotnet_naming_symbols.class.applicable_kinds = class
-dotnet_naming_symbols.class.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.class.required_modifiers = 
-
 dotnet_naming_symbols.interface.applicable_kinds = interface
-dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.interface.required_modifiers = 
-
-dotnet_naming_symbols.struct.applicable_kinds = struct
-dotnet_naming_symbols.struct.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.struct.required_modifiers = 
-
-dotnet_naming_symbols.enum.applicable_kinds = enum
-dotnet_naming_symbols.enum.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.enum.required_modifiers = 
-
-dotnet_naming_symbols.delegate.applicable_kinds = delegate
-dotnet_naming_symbols.delegate.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.delegate.required_modifiers = 
-
-dotnet_naming_symbols.event.applicable_kinds = event
-dotnet_naming_symbols.event.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.event.required_modifiers = 
-
-dotnet_naming_symbols.method.applicable_kinds = method
-dotnet_naming_symbols.method.applicable_accessibilities = public
-dotnet_naming_symbols.method.required_modifiers = 
-
-dotnet_naming_symbols.private_method.applicable_kinds = method
-dotnet_naming_symbols.private_method.applicable_accessibilities = private
-dotnet_naming_symbols.private_method.required_modifiers = 
-
-dotnet_naming_symbols.abstract_method.applicable_kinds = method
-dotnet_naming_symbols.abstract_method.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.abstract_method.required_modifiers = abstract
-
-dotnet_naming_symbols.static_method.applicable_kinds = method
-dotnet_naming_symbols.static_method.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.static_method.required_modifiers = static
-
-dotnet_naming_symbols.property.applicable_kinds = property
-dotnet_naming_symbols.property.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.property.required_modifiers = 
-
-dotnet_naming_symbols.public_or_protected_field.applicable_kinds = field
-dotnet_naming_symbols.public_or_protected_field.applicable_accessibilities = public, protected
-dotnet_naming_symbols.public_or_protected_field.required_modifiers = 
-
-dotnet_naming_symbols.static_field.applicable_kinds = field
-dotnet_naming_symbols.static_field.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.static_field.required_modifiers = static
-
+dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum, delegate
 dotnet_naming_symbols.private_or_internal_field.applicable_kinds = field
 dotnet_naming_symbols.private_or_internal_field.applicable_accessibilities = internal, private, private_protected
-dotnet_naming_symbols.private_or_internal_field.required_modifiers = 
-
-dotnet_naming_symbols.private_or_internal_static_field.applicable_kinds = field
-dotnet_naming_symbols.private_or_internal_static_field.applicable_accessibilities = internal, private, private_protected
-dotnet_naming_symbols.private_or_internal_static_field.required_modifiers = static
-
-dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
-dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.types.required_modifiers = 
-
 dotnet_naming_symbols.parameter.applicable_kinds = parameter
-dotnet_naming_symbols.parameter.applicable_accessibilities = *
-dotnet_naming_symbols.parameter.required_modifiers = 
-
 dotnet_naming_symbols.local_variable.applicable_kinds = local
-dotnet_naming_symbols.local_variable.applicable_accessibilities = *
-dotnet_naming_symbols.local_variable.required_modifiers = 
-
-# Naming styles
-
-dotnet_naming_style.pascal_case.required_prefix = 
-dotnet_naming_style.pascal_case.required_suffix = 
-dotnet_naming_style.pascal_case.word_separator = 
-dotnet_naming_style.pascal_case.capitalization = pascal_case
 
 dotnet_naming_style.begins_with_i.required_prefix = I
-dotnet_naming_style.begins_with_i.required_suffix = 
-dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
 
-dotnet_naming_style.camelcase.required_prefix = 
-dotnet_naming_style.camelcase.required_suffix = 
-dotnet_naming_style.camelcase.word_separator = 
-dotnet_naming_style.camelcase.capitalization = camel_case
+dotnet_naming_style.pascal_case.capitalization = pascal_case
 
 dotnet_naming_style.m_pascalcase.required_prefix = m_
-dotnet_naming_style.m_pascalcase.required_suffix = 
-dotnet_naming_style.m_pascalcase.word_separator = 
 dotnet_naming_style.m_pascalcase.capitalization = pascal_case
 
-dotnet_naming_style._pascalcase.required_prefix = _
-dotnet_naming_style._pascalcase.required_suffix = 
-dotnet_naming_style._pascalcase.word_separator = 
-dotnet_naming_style._pascalcase.capitalization = pascal_case
+dotnet_naming_style.camelcase.capitalization = camel_case
 
-dotnet_naming_style.onpascalcase.required_prefix = On
-dotnet_naming_style.onpascalcase.required_suffix = 
-dotnet_naming_style.onpascalcase.word_separator = 
-dotnet_naming_style.onpascalcase.capitalization = pascal_case
+#### Platform Compatibility ####
 
-dotnet_naming_style.on_pascalcase_delegate.required_prefix = On
-dotnet_naming_style.on_pascalcase_delegate.required_suffix = Delegate
-dotnet_naming_style.on_pascalcase_delegate.word_separator = 
-dotnet_naming_style.on_pascalcase_delegate.capitalization = pascal_case
-csharp_style_prefer_null_check_over_type_check = true:suggestion
-csharp_style_prefer_local_over_anonymous_function = true:suggestion
-csharp_style_prefer_extended_property_pattern = true:suggestion
-csharp_style_prefer_utf8_string_literals = true:suggestion
-csharp_style_prefer_tuple_swap = true:suggestion
-csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
-csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:silent
-csharp_style_prefer_primary_constructors = true:suggestion
-csharp_style_prefer_top_level_statements = true:silent
-csharp_style_prefer_method_group_conversion = true:silent
-csharp_style_namespace_declarations = block_scoped:silent
-csharp_style_prefer_readonly_struct_member = true:suggestion
-csharp_style_prefer_readonly_struct = true:suggestion
-csharp_prefer_static_anonymous_function = true:suggestion
-
-[*.{cs,vb}]
-dotnet_style_operator_placement_when_wrapping = beginning_of_line
-tab_width = 4
-indent_size = 4
-dotnet_style_coalesce_expression = true:suggestion
-dotnet_style_null_propagation = true:suggestion
-dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
-dotnet_style_prefer_auto_properties = true:silent
-dotnet_style_object_initializer = true:silent
-dotnet_style_collection_initializer = true:silent
-dotnet_style_prefer_simplified_boolean_expressions = true:silent
-dotnet_style_prefer_conditional_expression_over_assignment = true:silent
-dotnet_style_prefer_conditional_expression_over_return = true:silent
-dotnet_style_explicit_tuple_names = true:warning
-dotnet_style_prefer_inferred_tuple_names = true:suggestion
-dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
-dotnet_style_prefer_compound_assignment = true:suggestion
-dotnet_style_prefer_simplified_interpolation = true:suggestion
-dotnet_style_prefer_collection_expression = when_types_loosely_match:suggestion
-dotnet_style_namespace_match_folder = true:suggestion
-dotnet_style_predefined_type_for_locals_parameters_members = true:warning
-dotnet_code_quality_unused_parameters = all:suggestion
-dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
-dotnet_style_qualification_for_method = false:silent
-dotnet_style_readonly_field = true:silent
-dotnet_style_allow_statement_immediately_after_block_experimental = true:silent
-dotnet_style_allow_multiple_blank_lines_experimental = true:silent
-dotnet_style_qualification_for_event = false:silent
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
-dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
-dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
-dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
-dotnet_style_qualification_for_property = false:silent
-dotnet_style_qualification_for_field = false:silent
-dotnet_style_predefined_type_for_member_access = true:warning
-end_of_line = crlf
 dotnet_diagnostic.CA1416.severity = error
 
 # ============================================
-# SONAR ANALYZER RULES
-# Дополнительные правила безопасности и качества кода
+# CRITICAL RULES - Security & Bugs (Error level)
 # ============================================
 
 [*.cs]
 
-# СБОР (Security) - критические правила безопасности
-dotnet_diagnostic.S2068.severity = error        # Не хранить пароли/секреты в коде
-dotnet_diagnostic.S2077.severity = error        # SQL injection уязвимости
-dotnet_diagnostic.S2092.severity = error        # Cookie без Secure флага
-dotnet_diagnostic.S2115.severity = error        # Безопасное использование GC.KeepAlive
-dotnet_diagnostic.S2222.severity = error        # Правильное освобождение блокировок
-dotnet_diagnostic.S2259.severity = error        # Null pointer dereference
-dotnet_diagnostic.S2583.severity = error        # Недостижимый код из-за условий
-dotnet_diagnostic.S2589.severity = error        # Булевы выражения всегда true/false
-dotnet_diagnostic.S2696.severity = error        # Instance members access from static context
-dotnet_diagnostic.S2755.severity = error        # XML уязвимости
-dotnet_diagnostic.S4423.severity = error        # Слабые алгоритмы шифрования
-dotnet_diagnostic.S4502.severity = error        # Cross-Site Scripting (XSS)
-dotnet_diagnostic.S4507.severity = error        # Debug mode в production
-dotnet_diagnostic.S4510.severity = error        # Deserialization vulnerabilities
+# Security - Hardcoded secrets & passwords
+dotnet_diagnostic.S2068.severity = error
 
-# BAQ (Bugs and Quality) - критические баги
-dotnet_diagnostic.S112.severity = error         # Не выбрасывать общие исключения
-dotnet_diagnostic.S1135.severity = warning      # TODO/FIXME комменты
-dotnet_diagnostic.S1144.severity = error        # Неиспользуемые private члены
-dotnet_diagnostic.S1172.severity = error        # Неиспользуемые параметры методов
-dotnet_diagnostic.S1186.severity = error        # Пустые методы
-dotnet_diagnostic.S125.severity = error         # Закомментированный код
-dotnet_diagnostic.S1450.severity = warning      # Поля, которые можно сделать локальными
-dotnet_diagnostic.S1481.severity = error        # Неиспользуемые локальные переменные
-dotnet_diagnostic.S1643.severity = error        # Конкатенация строк в цикле
-dotnet_diagnostic.S1659.severity = error        # Объявление нескольких переменных в одной строке
-dotnet_diagnostic.S1699.severity = warning      # Вызов виртуальных методов в конструкторе
-dotnet_diagnostic.S1751.severity = warning      # Бесконечные циклы
-dotnet_diagnostic.S1854.severity = error        # Бессмысленные присваивания
-dotnet_diagnostic.S1858.severity = warning      # Использовать Contains вместо IndexOf
-dotnet_diagnostic.S1862.severity = warning      # Инвертированные условия
-dotnet_diagnostic.S1905.severity = warning      # Избыточные приведения типов
-dotnet_diagnostic.S1939.severity = warning      # Избыточные интерфейсы
-dotnet_diagnostic.S1940.severity = warning      # Инвертированные булевы выражения
-dotnet_diagnostic.S1994.severity = warning      # Бесконечные циклы for
-dotnet_diagnostic.S2114.severity = error        # Двойная перечисление IEnumerable
-dotnet_diagnostic.S2123.severity = warning      # Перезаписанные значения
-dotnet_diagnostic.S2139.severity = warning      # Логирование исключений
-dotnet_diagnostic.S2184.severity = error        # Overflow в вычислениях
-dotnet_diagnostic.S2190.severity = error        # Рекурсия без выхода
-dotnet_diagnostic.S2197.severity = warning      # Modulus на float
-dotnet_diagnostic.S2201.severity = error        # Игнорируемые возвращаемые значения
-dotnet_diagnostic.S2219.severity = warning      # Избыточные проверки is/as
-dotnet_diagnostic.S2223.severity = error        # Неатомарные операции над статикой
-dotnet_diagnostic.S2225.severity = error        # ToString() возвращает null
-dotnet_diagnostic.S2234.severity = warning      # Неправильный порядок параметров
-dotnet_diagnostic.S2251.severity = warning      # Использовать foreach
-dotnet_diagnostic.S2257.severity = warning      # Указывать CultureInfo
-dotnet_diagnostic.S2275.severity = warning      # DateTime форматирование
-dotnet_diagnostic.S2302.severity = warning      # Правильный Dispose
-dotnet_diagnostic.S2325.severity = warning      # Методы, которые можно сделать static
-dotnet_diagnostic.S2328.severity = warning      # Правильный GetHashCode
-dotnet_diagnostic.S2330.severity = error        # Array covariance
-dotnet_diagnostic.S2339.severity = warning      # Public константы
-dotnet_diagnostic.S2368.severity = warning      # Многомерные массивы в public API
-dotnet_diagnostic.S2372.severity = warning      # Слишком общие типы исключений
-dotnet_diagnostic.S2386.severity = error        # Мutable static fields
-dotnet_diagnostic.S2436.severity = warning      # Unchecked в unchecked контексте
-dotnet_diagnostic.S2445.severity = warning      # Блокировки на this или typeof
-dotnet_diagnostic.S2486.severity = warning      # Обработчики generic исключений
-dotnet_diagnostic.S2612.severity = warning      # Слишком широкие разрешения
-dotnet_diagnostic.S2637.severity = warning      # Nullable reference types
-dotnet_diagnostic.S2674.severity = warning      # Проверка типа перед кастом
-dotnet_diagnostic.S2681.severity = warning      # Многомерные массивы
-dotnet_diagnostic.S2692.severity = warning      # Indexer вместо LINQ
-dotnet_diagnostic.S2737.severity = warning      # Сравнения с null
-dotnet_diagnostic.S2743.severity = warning      # Static поля
-dotnet_diagnostic.S2930.severity = error        # Правильная реализация IDisposable
-dotnet_diagnostic.S2931.severity = error        # IDisposable члены
-dotnet_diagnostic.S2933.severity = warning      # Readonly поля
-dotnet_diagnostic.S2953.severity = warning      # Indexers вместо методов
-dotnet_diagnostic.S2995.severity = warning      # Ambiguous overloads
-dotnet_diagnostic.S2996.severity = warning      # Атрибуты
-dotnet_diagnostic.S3010.severity = error        # Static поля
-dotnet_diagnostic.S3011.severity = warning      # Reflection
-dotnet_diagnostic.S3060.severity = warning      # out параметры
-dotnet_diagnostic.S3168.severity = warning      # async без await
-dotnet_diagnostic.S3172.severity = error        # Правильный Dispose
-dotnet_diagnostic.S3215.severity = warning      # Интерфейсы
-dotnet_diagnostic.S3216.severity = warning      # Covariance
-dotnet_diagnostic.S3218.severity = error        # InnerException preservation
-dotnet_diagnostic.S3220.severity = warning      # Методы
-dotnet_diagnostic.S3235.severity = warning      # Redundant parentheses
-dotnet_diagnostic.S3236.severity = warning      # Caller info attributes
-dotnet_diagnostic.S3237.severity = warning      # Value types
-dotnet_diagnostic.S3240.severity = warning      # Duplicate conditions
-dotnet_diagnostic.S3241.severity = warning      # Parameters
-dotnet_diagnostic.S3242.severity = warning      # Generic types
-dotnet_diagnostic.S3247.severity = warning      # default instead of null
-dotnet_diagnostic.S3249.severity = warning      # Base class calls
-dotnet_diagnostic.S3251.severity = warning      # Implementation
-dotnet_diagnostic.S3253.severity = warning      # Constructors
-dotnet_diagnostic.S3254.severity = warning      # Default parameter values
-dotnet_diagnostic.S3256.severity = warning      # String interpolation
-dotnet_diagnostic.S3257.severity = warning      # Redundant declarations
-dotnet_diagnostic.S3262.severity = warning      # Params
-dotnet_diagnostic.S3263.severity = warning      # Invalid
-dotnet_diagnostic.S3264.severity = warning      # Events
-dotnet_diagnostic.S3265.severity = warning      # Non-flags enum
-dotnet_diagnostic.S3353.severity = warning      # const для неизменяемых локальных переменных
-dotnet_diagnostic.S3366.severity = warning      # this из конструктора
-dotnet_diagnostic.S3427.severity = warning      # Методы, которые могут быть static
-dotnet_diagnostic.S3440.severity = warning      # var вместо явного типа
-dotnet_diagnostic.S3442.severity = warning      # Abstract class constructors
-dotnet_diagnostic.S3444.severity = error        # SuppressFinalize в Dispose
-dotnet_diagnostic.S3450.severity = warning      # Record deconstruction
-dotnet_diagnostic.S3451.severity = warning      # Async method naming
-dotnet_diagnostic.S3453.severity = warning      # Classes with only static methods
-dotnet_diagnostic.S3456.severity = warning      # Unnecessary string interpolation
-dotnet_diagnostic.S3458.severity = warning      # ValueTuple naming
-dotnet_diagnostic.S3459.severity = warning      # Unassigned auto-properties
-dotnet_diagnostic.S3464.severity = warning      # Record with struct
-dotnet_diagnostic.S3465.severity = warning      # Optional parameters
-dotnet_diagnostic.S3604.severity = warning      # Member initializers
-dotnet_diagnostic.S3605.severity = warning      # Redundant field initializers
-dotnet_diagnostic.S3610.severity = warning      # ValueTuple element names
-dotnet_diagnostic.S3626.severity = warning      # Local functions
-dotnet_diagnostic.S3649.severity = error        # SQL parameters
-dotnet_diagnostic.S3655.severity = warning      # Nullable value types
-dotnet_diagnostic.S3657.severity = warning      # ArgumentException without paramName
-dotnet_diagnostic.S3664.severity = warning      # IsNullOrEmpty for string
-dotnet_diagnostic.S3693.severity = warning      # Empty finally blocks
-dotnet_diagnostic.S3776.severity = warning      # Cognitive complexity
-dotnet_diagnostic.S3871.severity = error        # Exception types public
-dotnet_diagnostic.S3872.severity = error        # Parameter names should not be duplicated
-dotnet_diagnostic.S3874.severity = warning      # out parameters in methods
-dotnet_diagnostic.S3875.severity = error        # Overloads with different order
-dotnet_diagnostic.S3876.severity = warning      # Params array
-dotnet_diagnostic.S3877.severity = warning      # Throw in finally
-dotnet_diagnostic.S3878.severity = warning      # Params for array
-dotnet_diagnostic.S3880.severity = warning      # Nameof for parameter
+# SQL Injection vulnerabilities
+dotnet_diagnostic.S2077.severity = error
+dotnet_diagnostic.S3649.severity = error
+
+# Cross-Site Scripting (XSS)
+dotnet_diagnostic.S4502.severity = error
+
+# Null dereference / Null pointer
+dotnet_diagnostic.S2259.severity = error
+dotnet_diagnostic.CA1508.severity = error
+dotnet_diagnostic.CA1806.severity = error
+
+# Resource leaks & disposal
+dotnet_diagnostic.S2222.severity = error        # Lock release
+dotnet_diagnostic.S2930.severity = error        # IDisposable implementation
+dotnet_diagnostic.S2931.severity = error        # IDisposable members
 dotnet_diagnostic.S3881.severity = error        # IDisposable correctly
-dotnet_diagnostic.S3884.severity = warning      # StackTrace usage
-dotnet_diagnostic.S3885.severity = warning      # Assembly.Load
-dotnet_diagnostic.S3887.severity = warning      # Immutable collections
-dotnet_diagnostic.S3898.severity = warning      # ValueType Equals
-dotnet_diagnostic.S3900.severity = warning      # Null check for value types
-dotnet_diagnostic.S3902.severity = warning      # GetType for type comparison
-dotnet_diagnostic.S3903.severity = error        # Types in namespaces
-dotnet_diagnostic.S3904.severity = warning      # Assembly version
-dotnet_diagnostic.S3905.severity = warning      # AssemblyCompany
-dotnet_diagnostic.S3906.severity = error        # Event handlers return void
-dotnet_diagnostic.S3908.severity = warning      # GetHashCode with Equals
-dotnet_diagnostic.S3910.severity = warning      # Collection properties
-dotnet_diagnostic.S3913.severity = warning      # Private field usage
-dotnet_diagnostic.S3915.severity = warning      # sealed for IDisposable
-dotnet_diagnostic.S3925.severity = error        # ISerializable correctly
-dotnet_diagnostic.S3926.severity = error        # ArgumentException correctly
-dotnet_diagnostic.S3927.severity = warning      # Serialization info
-dotnet_diagnostic.S3928.severity = error        # Parameter name correct
-dotnet_diagnostic.S3936.severity = warning      # SuppressMessageAttribute
-dotnet_diagnostic.S3937.severity = warning      # Number should not be used
-dotnet_diagnostic.S3949.severity = warning      # Overflow in calculations
-dotnet_diagnostic.S3956.severity = warning      # Generic list inheritance
-dotnet_diagnostic.S3963.severity = warning      # Static constructors
-dotnet_diagnostic.S3966.severity = error        # IDisposable disposed twice
-dotnet_diagnostic.S3971.severity = warning      # Dispose for IDisposable
-dotnet_diagnostic.S3972.severity = warning      # Control characters in regex
-dotnet_diagnostic.S3973.severity = warning      # Dispose pattern
-dotnet_diagnostic.S3984.severity = warning      # Exception catch
-dotnet_diagnostic.S3990.severity = warning      # ClsCompliant attribute
-dotnet_diagnostic.S3992.severity = warning      # Contract usage
-dotnet_diagnostic.S3993.severity = warning      # Custom attributes
-dotnet_diagnostic.S3994.severity = warning      # URL strings
-dotnet_diagnostic.S3995.severity = warning      # Guid strings
-dotnet_diagnostic.S3996.severity = warning      # Uri properties
-dotnet_diagnostic.S3997.severity = warning      # Serializable attribute
-dotnet_diagnostic.S3998.severity = warning      # ThreadStatic
-dotnet_diagnostic.S4000.severity = warning      # Pointers
-dotnet_diagnostic.S4002.severity = warning      # Disposable types
-dotnet_diagnostic.S4004.severity = warning      # Methods complexity
+dotnet_diagnostic.S3966.severity = error        # Dispose twice
+dotnet_diagnostic.S2302.severity = error        # Proper Dispose pattern
+
+# Dead code & unused
+dotnet_diagnostic.S1144.severity = error        # Unused private members
+dotnet_diagnostic.S1172.severity = error        # Unused parameters
+dotnet_diagnostic.S1481.severity = error        # Unused local variables
+dotnet_diagnostic.S1854.severity = error        # Dead stores
+dotnet_diagnostic.S1858.severity = error        # Use String.Contains
+
+# Arithmetic overflow
+dotnet_diagnostic.S2184.severity = error        # Math overflow
+dotnet_diagnostic.S2330.severity = error        # Array covariance
+
+# Infinite loops
+dotnet_diagnostic.S1751.severity = error
+dotnet_diagnostic.S2190.severity = error        # Recursion without exit
+dotnet_diagnostic.S1994.severity = error        # Infinite for loop
+
+# Exception handling
+dotnet_diagnostic.S112.severity = error         # Catch Exception
+dotnet_diagnostic.S3871.severity = error        # Exception types public
+dotnet_diagnostic.S3872.severity = error        # Duplicate param names
+dotnet_diagnostic.S3875.severity = error        # Overloads with different order
+
+# Async/Await issues
+dotnet_diagnostic.S2201.severity = error        # Ignored return values
+dotnet_diagnostic.S3168.severity = error        # Async without await
 dotnet_diagnostic.S4016.severity = error        # Async blocking
-dotnet_diagnostic.S4017.severity = warning      # Method overloads order
 dotnet_diagnostic.S4018.severity = error        # Await usage
 dotnet_diagnostic.S4019.severity = error        # Dispose call
-dotnet_diagnostic.S4022.severity = warning      # Inheritance
-dotnet_diagnostic.S4023.severity = warning      # Interface implementation
-dotnet_diagnostic.S4025.severity = warning      # Empty statement
-dotnet_diagnostic.S4026.severity = warning      # Task without await
-dotnet_diagnostic.S4027.severity = warning      # Interface with implementation
-dotnet_diagnostic.S4035.severity = warning      # Sealed class for IDisposable
-dotnet_diagnostic.S4036.severity = error        # Process.Start with user input
-dotnet_diagnostic.S4039.severity = warning      # Layout attribute
+dotnet_diagnostic.S4026.severity = error        # Task without await
+
+# Serialization
+dotnet_diagnostic.S3925.severity = error        # ISerializable
+dotnet_diagnostic.S3926.severity = error        # ArgumentException
+dotnet_diagnostic.S3928.severity = error        # Parameter name
+dotnet_diagnostic.S3906.severity = error        # Event handlers return void
+dotnet_diagnostic.S3903.severity = error        # Types in namespaces
+
+# Static state issues
+dotnet_diagnostic.S2223.severity = error        # Non-atomic operations on static
+dotnet_diagnostic.S2386.severity = error        # Mutable static fields
+dotnet_diagnostic.S3010.severity = error        # Static fields initialization
+dotnet_diagnostic.S2696.severity = error        # Instance members from static
+
+# Commented code
+dotnet_diagnostic.S125.severity = error         # Commented code
+
+# Cognitive complexity
+dotnet_diagnostic.S3776.severity = warning      # Cognitive complexity (15 by default)
+
+# TODO/FIXME warnings
+dotnet_diagnostic.S1135.severity = suggestion   # TODO comments
+
+# ============================================
+# IMPORTANT RULES - Code Quality (Warning level)
+# ============================================
+
+# Dispose patterns
+dotnet_diagnostic.S3963.severity = warning      # Static constructors
+dotnet_diagnostic.S3971.severity = warning      # Dispose for IDisposable
+dotnet_diagnostic.S3973.severity = warning      # Dispose pattern
 dotnet_diagnostic.S4049.severity = warning      # Property with getter only
-dotnet_diagnostic.S4050.severity = warning      # Operator overloads
-dotnet_diagnostic.S4052.severity = warning      # Type conversion
-dotnet_diagnostic.S4055.severity = warning      # Literal suffixes
-dotnet_diagnostic.S4056.severity = warning      # Overflow in constant
-dotnet_diagnostic.S4058.severity = warning      # String comparison
-dotnet_diagnostic.S4059.severity = warning      # Property name
-dotnet_diagnostic.S4060.severity = warning      # Sealed attributes
-dotnet_diagnostic.S4061.severity = warning      # Serializable ctor
-dotnet_diagnostic.S4062.severity = warning      # Parameter validation
-dotnet_diagnostic.S4070.severity = warning      # Equals override
-dotnet_diagnostic.S4071.severity = warning      # Serializable fields
 
-# Настройка порогов (thresholds)
-dotnet_code_quality.cognitive_complexity = 15   # Макс когнитивная сложность
-dotnet_code_quality.CSharp.max_method_lines = 50 # Макс строк в методе
-dotnet_code_quality.CSharp.max_parameters = 7    # Макс параметров
-dotnet_code_quality.max_returned_values = 3     # Макс возвращаемых значений
-dotnet_code_quality.max_enum_count = 20         # Макс элементов в enum
-dotnet_code_quality.max_union_branch_count = 10 # Макс веток в union
+# Nullable reference types
+dotnet_diagnostic.CA1062.severity = suggestion      # Validate arguments (public API)
+dotnet_diagnostic.CA1303.severity = suggestion      # Do not pass literals as params
+dotnet_diagnostic.CA2007.severity = none            # ConfigureAwait - for libraries, not needed
 
-# Исключения для тестовых проектов
-[{*Tests.cs,*Test.cs,*.Test.cs}]
-dotnet_diagnostic.S2699.severity = warning      # Tests should include assertions
-dotnet_diagnostic.S1118.severity = none          # Utility classes constructors
-dotnet_diagnostic.S101.severity = none           # Type name casing
-dotnet_diagnostic.S4023.severity = none          # Interface implementation
-dotnet_diagnostic.S3903.severity = none          # Types in namespaces
+# Code quality
+dotnet_diagnostic.S1659.severity = warning      # Multiple variables in one line
+dotnet_diagnostic.S1643.severity = warning      # String concatenation in loop
+dotnet_diagnostic.S2123.severity = warning      # Overwritten values
+dotnet_diagnostic.S2325.severity = warning      # Methods can be static
+dotnet_diagnostic.S2328.severity = warning      # GetHashCode override
+dotnet_diagnostic.S3451.severity = warning      # Async method naming
+
+# StyleCop - Keep only essential
+dotnet_diagnostic.SA1201.severity = warning     # Elements order
+dotnet_diagnostic.SA1202.severity = warning     # Access modifier order
+dotnet_diagnostic.SA1204.severity = warning     # Static before instance
+dotnet_diagnostic.SA1300.severity = warning     # Upper-case for elements
+dotnet_diagnostic.SA1302.severity = warning     # Interface with I prefix
+dotnet_diagnostic.SA1400.severity = warning     # Access modifier declared
+dotnet_diagnostic.SA1401.severity = error       # Fields should be private
+dotnet_diagnostic.SA1128.severity = warning     # Constructor on own line
+dotnet_diagnostic.SA1503.severity = warning     # Braces required
+
+# Suppress documentation rules (optional - set to warning if needed)
+dotnet_diagnostic.SA1600.severity = none        # Elements must be documented
+dotnet_diagnostic.SA1633.severity = none        # File header
+dotnet_diagnostic.SA1200.severity = none        # Using placement
+
+# Suppress verbose StyleCop rules
+dotnet_diagnostic.SA0001.severity = none        # XML comment analysis disabled
+dotnet_diagnostic.SA1005.severity = none        # Single line comment space
+dotnet_diagnostic.SA1009.severity = none        # Closing parenthesis space
+dotnet_diagnostic.SA1101.severity = none        # Prefix local calls with this
+dotnet_diagnostic.SA1116.severity = none        # Parameters on separate lines
+dotnet_diagnostic.SA1117.severity = none        # Parameters same line
+dotnet_diagnostic.SA1308.severity = none        # m_ prefix (already handled by SA1309)
+dotnet_diagnostic.SA1313.severity = none        # Parameter camelCase
+dotnet_diagnostic.SA1413.severity = none        # Trailing comma
+dotnet_diagnostic.SA1502.severity = none        # Single line elements
+dotnet_diagnostic.SA1508.severity = none        # Blank line before brace
+dotnet_diagnostic.SA1512.severity = none        # Blank line after comment
+dotnet_diagnostic.SA1513.severity = none        # Blank line after brace
+dotnet_diagnostic.SA1515.severity = none        # Blank line before comment
+dotnet_diagnostic.SA1516.severity = none        # Elements separated by blank line
 
 # ============================================
-# STYLECOP ANALYZER RULES
-# Дополнительные правила стиля и именования
+# TEST PROJECTS - Relaxed rules
 # ============================================
 
-[*.cs]
-
-# SAxxxx: Documentation rules
-dotnet_diagnostic.SA0001.severity = none
-dotnet_diagnostic.SA1600.severity = none      # Elements must be documented
-dotnet_diagnostic.SA1601.severity = warning      # Partial elements must be documented
-dotnet_diagnostic.SA1602.severity = warning      # Enumeration items must be documented
-dotnet_diagnostic.SA1604.severity = none      # Element documentation must have summary
-dotnet_diagnostic.SA1605.severity = warning      # Partial element documentation must have summary
-dotnet_diagnostic.SA1606.severity = warning      # Element documentation must have summary text
-dotnet_diagnostic.SA1607.severity = warning      # Partial element documentation must have summary text
-dotnet_diagnostic.SA1608.severity = warning      # Element documentation must not have default summary
-dotnet_diagnostic.SA1609.severity = none         # Property documentation must have value
-dotnet_diagnostic.SA1610.severity = warning      # Property documentation must have value text
-dotnet_diagnostic.SA1611.severity = none      # Element parameters must be documented
-dotnet_diagnostic.SA1612.severity = warning      # Element parameter documentation must match element
-dotnet_diagnostic.SA1613.severity = warning      # Element parameter documentation must have text
-dotnet_diagnostic.SA1614.severity = warning      # Element parameter documentation must have text
-dotnet_diagnostic.SA1615.severity = warning      # Element return value must be documented
-dotnet_diagnostic.SA1616.severity = warning      # Element return value documentation must have text
-dotnet_diagnostic.SA1617.severity = warning      # Void return value should not be documented
-dotnet_diagnostic.SA1618.severity = warning      # Generic type parameters must be documented
-dotnet_diagnostic.SA1619.severity = warning      # Generic type parameters must be documented
-dotnet_diagnostic.SA1620.severity = warning      # Generic type parameter documentation must have text
-dotnet_diagnostic.SA1621.severity = warning      # Generic type parameter documentation must have text
-dotnet_diagnostic.SA1622.severity = warning      # Generic type parameter documentation must match element
-dotnet_diagnostic.SA1623.severity = warning      # Property summary documentation must match accessors
-dotnet_diagnostic.SA1624.severity = warning      # Property summary documentation must have text
-dotnet_diagnostic.SA1625.severity = warning      # Element documentation should not be copied and pasted
-dotnet_diagnostic.SA1626.severity = warning      # Single-line comments should not be used for documentation
-dotnet_diagnostic.SA1627.severity = warning      # Documentation text should not be empty
-dotnet_diagnostic.SA1628.severity = warning      # Documentation text should begin with a capital letter
-dotnet_diagnostic.SA1629.severity = warning      # Documentation text should end with a period
-dotnet_diagnostic.SA1633.severity = none         # File must have header (отключено)
-dotnet_diagnostic.SA1634.severity = warning      # File header must show copyright
-dotnet_diagnostic.SA1635.severity = warning      # File header must have appropriate copyright
-dotnet_diagnostic.SA1636.severity = warning      # File header copyright text must match
-dotnet_diagnostic.SA1637.severity = warning      # File header must contain filename
-dotnet_diagnostic.SA1638.severity = warning      # File header file name documentation must match
-dotnet_diagnostic.SA1640.severity = warning      # File header must contain valid company text
-dotnet_diagnostic.SA1641.severity = warning      # File header company name text must match
-dotnet_diagnostic.SA1642.severity = warning      # Constructor summary documentation must begin with standard text
-dotnet_diagnostic.SA1643.severity = warning      # Destructor summary documentation must begin with standard text
-dotnet_diagnostic.SA1644.severity = warning      # Documentation for type parameters must begin with standard text
-
-# SA1xxx: Layout rules
-dotnet_diagnostic.SA1009.severity = none
-dotnet_diagnostic.SA1100.severity = warning      # Do not prefix calls with base unless local implementation exists
-dotnet_diagnostic.SA1101.severity = warning      # Prefix local calls with this
-dotnet_diagnostic.SA1102.severity = warning      # Query clause should follow previous clause
-dotnet_diagnostic.SA1103.severity = warning      # Query clauses should be on separate lines or all on one line
-dotnet_diagnostic.SA1104.severity = warning      # Query clause should begin on new line when previous clause spans multiple lines
-dotnet_diagnostic.SA1105.severity = warning      # Query clauses spanning multiple lines should begin on own line
-dotnet_diagnostic.SA1106.severity = warning      # Code should not contain empty statements
-dotnet_diagnostic.SA1107.severity = warning      # Code should not contain multiple statements on one line
-dotnet_diagnostic.SA1108.severity = warning      # Block statements should not contain embedded comments
-dotnet_diagnostic.SA1109.severity = warning      # Block statements should not contain embedded regions
-dotnet_diagnostic.SA1110.severity = warning      # Opening parenthesis should be on declaration line
-dotnet_diagnostic.SA1111.severity = warning      # Closing parenthesis should be on line of last parameter
-dotnet_diagnostic.SA1112.severity = warning      # Closing parenthesis should be on line of opening parenthesis
-dotnet_diagnostic.SA1113.severity = warning      # Comma should be on same line as previous parameter
-dotnet_diagnostic.SA1114.severity = warning      # Parameter list should follow declaration
-dotnet_diagnostic.SA1115.severity = warning      # Parameter should follow comma
-dotnet_diagnostic.SA1116.severity = warning      # Split parameters should start on line after declaration
-dotnet_diagnostic.SA1117.severity = warning      # Parameters should be on same line or separate lines
-dotnet_diagnostic.SA1118.severity = warning      # Parameter should not span multiple lines
-dotnet_diagnostic.SA1119.severity = warning      # Statement should not use unnecessary parenthesis
-dotnet_diagnostic.SA1120.severity = warning      # Comments should contain text
-dotnet_diagnostic.SA1121.severity = warning      # Use built-in type alias
-dotnet_diagnostic.SA1122.severity = warning      # Use string.Empty for empty strings
-dotnet_diagnostic.SA1123.severity = warning      # Do not place regions within elements
-dotnet_diagnostic.SA1124.severity = warning      # Do not use regions
-dotnet_diagnostic.SA1125.severity = warning      # Use shorthand for nullable types
-dotnet_diagnostic.SA1127.severity = warning      # Generic type constraints should be on their own line
-dotnet_diagnostic.SA1128.severity = warning      # Put constructor initializers on their own line
-dotnet_diagnostic.SA1129.severity = warning      # Do not use default value type constructor
-dotnet_diagnostic.SA1130.severity = warning      # Use lambda syntax
-dotnet_diagnostic.SA1131.severity = warning      # Use readable conditions
-dotnet_diagnostic.SA1132.severity = warning      # Do not combine fields
-dotnet_diagnostic.SA1133.severity = warning      # Do not combine attributes
-dotnet_diagnostic.SA1134.severity = warning      # Attributes should not share line
-dotnet_diagnostic.SA1135.severity = warning      # Using directives should be qualified
-dotnet_diagnostic.SA1136.severity = warning      # Enum values should be on separate lines
-dotnet_diagnostic.SA1137.severity = warning      # Elements should have the same indentation
-dotnet_diagnostic.SA1139.severity = warning      # Use literal suffix notation instead of casting
-
-# SA12xx: Ordering rules
-dotnet_diagnostic.SA1200.severity = warning      # Using directives should be placed correctly
-dotnet_diagnostic.SA1201.severity = warning      # Elements should appear in the correct order
-dotnet_diagnostic.SA1202.severity = warning      # Elements should be ordered by access
-dotnet_diagnostic.SA1203.severity = warning      # Constants should appear before fields
-dotnet_diagnostic.SA1204.severity = warning      # Static elements should appear before instance elements
-dotnet_diagnostic.SA1205.severity = warning      # Partial elements should indicate access
-dotnet_diagnostic.SA1206.severity = warning      # Declaration keywords should follow order
-dotnet_diagnostic.SA1207.severity = warning      # Protected should come before internal
-dotnet_diagnostic.SA1208.severity = warning      # System using directives should come before other using directives
-dotnet_diagnostic.SA1209.severity = warning      # Using alias directives should be placed after other using directives
-dotnet_diagnostic.SA1210.severity = warning      # Using directives should be ordered alphabetically by namespace
-dotnet_diagnostic.SA1211.severity = warning      # Using alias directives should be ordered alphabetically by alias name
-dotnet_diagnostic.SA1212.severity = warning      # Property accessors should follow order
-dotnet_diagnostic.SA1213.severity = warning      # Event accessors should follow order
-dotnet_diagnostic.SA1214.severity = warning      # Readonly fields should appear before non-readonly fields
-dotnet_diagnostic.SA1215.severity = warning      # Instance readonly elements should appear before static readonly
-dotnet_diagnostic.SA1216.severity = warning      # Using static directives should be placed at correct location
-dotnet_diagnostic.SA1217.severity = warning      # Using static directives should be ordered alphabetically
-
-# SA13xx: Maintainability rules
-dotnet_diagnostic.SA1300.severity = warning      # Element should begin with upper-case letter
-dotnet_diagnostic.SA1302.severity = warning      # Interface names should begin with I
-dotnet_diagnostic.SA1303.severity = warning      # Const field names should begin with upper-case letter
-dotnet_diagnostic.SA1304.severity = warning      # Non-private readonly fields should begin with upper-case letter
-dotnet_diagnostic.SA1305.severity = warning      # Field names should not use Hungarian notation
-dotnet_diagnostic.SA1306.severity = warning      # Field names should begin with lower-case letter
-dotnet_diagnostic.SA1307.severity = warning      # Accessible fields should begin with upper-case letter
-dotnet_diagnostic.SA1308.severity = none      # Variable names should not be prefixed
-dotnet_diagnostic.SA1309.severity = warning      # Field names should not begin with underscore
-dotnet_diagnostic.SA1310.severity = warning      # Field names should not contain underscore
-dotnet_diagnostic.SA1311.severity = warning      # Static readonly fields should begin with upper-case letter
-dotnet_diagnostic.SA1312.severity = warning      # Variable names should begin with lower-case letter
-dotnet_diagnostic.SA1313.severity = none      # Parameter names should begin with lower-case letter
-dotnet_diagnostic.SA1314.severity = warning      # Type parameter names should begin with T
-dotnet_diagnostic.SA1315.severity = warning      # Local functions should begin with upper-case letter
-
-# SA14xx: Exception handling rules
-dotnet_diagnostic.SA1400.severity = warning      # Access modifier should be declared
-dotnet_diagnostic.SA1401.severity = error        # Fields should be private
-dotnet_diagnostic.SA1402.severity = warning      # File may only contain a single type
-dotnet_diagnostic.SA1403.severity = warning      # File may only contain a single namespace
-dotnet_diagnostic.SA1404.severity = warning      # Code analysis suppression should have justification
-dotnet_diagnostic.SA1405.severity = warning      # Debug.Assert should provide message text
-dotnet_diagnostic.SA1406.severity = warning      # Debug.Fail should provide message text
-dotnet_diagnostic.SA1407.severity = warning      # Arithmetic expressions should be declared
-dotnet_diagnostic.SA1408.severity = warning      # Conditional expressions should declare precedence
-dotnet_diagnostic.SA1410.severity = warning      # Remove delegate parenthesis when possible
-dotnet_diagnostic.SA1411.severity = warning      # Attribute constructor should not use unnecessary parenthesis
-dotnet_diagnostic.SA1412.severity = none      # Store files as UTF-8 with byte order mark
-dotnet_diagnostic.SA1413.severity = warning      # Use trailing comma in multi-line initializers
-dotnet_diagnostic.SA1414.severity = warning      # Tuple types in signatures should have element names
-
-# SA15xx: Spacing rules
-dotnet_diagnostic.SA1500.severity = warning      # Braces for multi-line statements should not share line
-dotnet_diagnostic.SA1501.severity = warning      # Statement should not be on a single line
-dotnet_diagnostic.SA1502.severity = warning      # Element should not be on a single line
-dotnet_diagnostic.SA1503.severity = warning      # Braces should not be omitted
-dotnet_diagnostic.SA1504.severity = warning      # All accessors should be single-line or multi-line
-dotnet_diagnostic.SA1505.severity = warning      # Opening braces should not be followed by blank line
-dotnet_diagnostic.SA1506.severity = warning      # Element documentation headers should not be followed by blank line
-dotnet_diagnostic.SA1507.severity = warning      # Code should not contain multiple blank lines in a row
-dotnet_diagnostic.SA1508.severity = warning      # Closing braces should not be preceded by blank line
-dotnet_diagnostic.SA1509.severity = warning      # Opening braces should not be preceded by blank line
-dotnet_diagnostic.SA1510.severity = warning      # Chained statements should not be preceded by blank line
-dotnet_diagnostic.SA1511.severity = warning      # While-do footer should not be preceded by blank line
-dotnet_diagnostic.SA1512.severity = warning      # Single-line comments should not be followed by blank line
-dotnet_diagnostic.SA1513.severity = warning      # Closing brace should be followed by blank line
-dotnet_diagnostic.SA1514.severity = warning      # Element documentation header should be preceded by blank line
-dotnet_diagnostic.SA1515.severity = warning      # Single-line comment should be preceded by blank line
-dotnet_diagnostic.SA1516.severity = none      # Elements should be separated by blank line
-dotnet_diagnostic.SA1517.severity = warning      # Code should not contain blank lines at start of file
-dotnet_diagnostic.SA1518.severity = warning      # Code should not contain blank lines at end of file
-dotnet_diagnostic.SA1519.severity = warning      # Braces should not be omitted from multi-line child statement
-dotnet_diagnostic.SA1520.severity = warning      # Use braces consistently
-
-# SA16xx: Naming rules
-dotnet_diagnostic.SA1610.severity = warning      # Property documentation must have value text
-
-# Отключаем конфликтующие с .editorconfig правила
-dotnet_diagnostic.SA1117.severity = none         # Parameters should be on same line or separate lines
-dotnet_diagnostic.SA1116.severity = none         # Split parameters should start on line after declaration
-dotnet_diagnostic.SA1502.severity = none         # Element should not be on a single line
-dotnet_diagnostic.SA1513.severity = none         # Closing brace should be followed by blank line
-dotnet_diagnostic.SA1508.severity = none         # Closing braces should not be preceded by blank line
-dotnet_diagnostic.SA1505.severity = none         # Opening braces should not be followed by blank line
-dotnet_diagnostic.SA1509.severity = none         # Opening braces should not be preceded by blank line
-
-# IDE0022: Use expression body for method
-dotnet_diagnostic.IDE0022.severity = warning
+[{**/*Tests.cs,**/*Test.cs}]
+dotnet_diagnostic.S1135.severity = none
+dotnet_diagnostic.S1481.severity = none
+dotnet_diagnostic.S1854.severity = none
+dotnet_diagnostic.S1172.severity = none
+dotnet_diagnostic.S1186.severity = none
+dotnet_diagnostic.S1603.severity = none
+dotnet_diagnostic.S2699.severity = none        # Test should have assertions
+dotnet_diagnostic.S101.severity = none          # Type name casing

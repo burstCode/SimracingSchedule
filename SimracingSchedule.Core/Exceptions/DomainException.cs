@@ -10,7 +10,9 @@ public class DomainException : Exception
     /// </summary>
     /// <param name="message">Сообщение об ошибке.</param>
     public DomainException(string message)
-        : base(message) { }
+        : base(message)
+    {
+    }
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="DomainException"/>.
@@ -18,5 +20,7 @@ public class DomainException : Exception
     /// <param name="message">Сообщение об ошибке.</param>
     /// <param name="innerException">Внутреннее исключение.</param>
     public DomainException(string message, Exception innerException)
-        : base(message, innerException) { }
+        : base(message, innerException)
+    {
+    }
 }

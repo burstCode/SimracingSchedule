@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <AdditionalFiles Include="SonarLint.xml" />
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,3 @@
-// Copyright (c) SimRacing Club. All rights reserved.
 using SimRacingSchedule.Core.Enums;
 
 namespace SimRacingSchedule.Core.Entities;
@@ -8,8 +7,8 @@ namespace SimRacingSchedule.Core.Entities;
 /// </summary>
 public class Shift
 {
-    private readonly List<ShiftExchangeRequest> m_SentExchangeRequests = new ();
-    private readonly List<ShiftExchangeRequest> m_ReceivedExchangeRequests = new ();
+    private readonly List<ShiftExchangeRequest> _sentExchangeRequests = new ();
+    private readonly List<ShiftExchangeRequest> _receivedExchangeRequests = new ();
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="Shift"/>.
@@ -147,12 +146,12 @@ public class Shift
     /// <summary>
     /// Получает коллекция отправленных запросов на обмен смены.
     /// </summary>
-    public IReadOnlyCollection<ShiftExchangeRequest> SentExchangeRequests => this.m_SentExchangeRequests.AsReadOnly();
+    public IReadOnlyCollection<ShiftExchangeRequest> SentExchangeRequests => this._sentExchangeRequests.AsReadOnly();
 
     /// <summary>
     /// Получает Получает коллекция полученных запросов на обмен смены.
     /// </summary>
-    public IReadOnlyCollection<ShiftExchangeRequest> ReceivedExchangeRequests => this.m_ReceivedExchangeRequests.AsReadOnly();
+    public IReadOnlyCollection<ShiftExchangeRequest> ReceivedExchangeRequests => this._receivedExchangeRequests.AsReadOnly();
 
     /// <summary>
     /// Начать смену.

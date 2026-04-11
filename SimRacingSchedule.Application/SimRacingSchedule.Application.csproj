@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimRacingSchedule.Infrastructure\SimRacingSchedule.Infrastructure.csproj" />
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
 </Project>

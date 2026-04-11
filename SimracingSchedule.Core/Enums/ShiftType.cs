@@ -27,5 +27,4 @@ public enum ShiftType
     /// Полный рабочий день (8-9 часов)
     /// </summary>
     FullDay,    // 13:00 -> 22:00
-
 }

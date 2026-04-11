@@ -7,9 +7,9 @@ namespace SimRacingSchedule.Core.Entities;
 /// </summary>
 public class Employee
 {
-    private readonly List<Shift> m_Shifts = new ();
-    private readonly List<ShiftExchangeRequest> m_SentExchangeRequests = new ();
-    private readonly List<ShiftExchangeRequest> m_ReceivedExchangeRequests = new ();
+    private readonly List<Shift> _shifts = new ();
+    private readonly List<ShiftExchangeRequest> _sentExchangeRequests = new ();
+    private readonly List<ShiftExchangeRequest> _receivedExchangeRequests = new ();
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="Employee"/>.
@@ -97,17 +97,17 @@ public class Employee
     /// <summary>
     /// Получает смены сотрудника.
     /// </summary>
-    public IReadOnlyCollection<Shift> Shifts => this.m_Shifts.AsReadOnly();
+    public IReadOnlyCollection<Shift> Shifts => this._shifts.AsReadOnly();
 
     /// <summary>
     /// Получает список отправленных предложений об обмене сменами.
     /// </summary>
-    public IReadOnlyCollection<ShiftExchangeRequest> SentExchangeRequests => this.m_SentExchangeRequests.AsReadOnly();
+    public IReadOnlyCollection<ShiftExchangeRequest> SentExchangeRequests => this._sentExchangeRequests.AsReadOnly();
 
     /// <summary>
     /// Получает список полученных предложений об обмене сменами.
     /// </summary>
-    public IReadOnlyCollection<ShiftExchangeRequest> ReceivedExchangeRequests => this.m_ReceivedExchangeRequests.AsReadOnly();
+    public IReadOnlyCollection<ShiftExchangeRequest> ReceivedExchangeRequests => this._receivedExchangeRequests.AsReadOnly();
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="Employee"/>.
