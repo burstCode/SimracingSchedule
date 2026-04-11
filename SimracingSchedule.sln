@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimRacingSchedule.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimRacingSchedule.Application.Telegram", "SimRacingSchedule.Application.Telegram\SimRacingSchedule.Application.Telegram.csproj", "{C40BDDDE-B092-481A-9098-4CA9BF3B2B9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimRacingSchedule.Tests", "SimRacingSchedule.Tests\SimRacingSchedule.Tests.csproj", "{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{C40BDDDE-B092-481A-9098-4CA9BF3B2B9F}.Release|x64.Build.0 = Release|Any CPU
 		{C40BDDDE-B092-481A-9098-4CA9BF3B2B9F}.Release|x86.ActiveCfg = Release|Any CPU
 		{C40BDDDE-B092-481A-9098-4CA9BF3B2B9F}.Release|x86.Build.0 = Release|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Debug|x64.Build.0 = Debug|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Debug|x86.Build.0 = Debug|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Release|x64.ActiveCfg = Release|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Release|x64.Build.0 = Release|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Release|x86.ActiveCfg = Release|Any CPU
+		{F05F2088-8816-43E6-8B2F-DCCDFE92E0CD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

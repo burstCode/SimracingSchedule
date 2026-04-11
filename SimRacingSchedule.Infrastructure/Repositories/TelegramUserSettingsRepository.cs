@@ -7,9 +7,7 @@ namespace SimRacingSchedule.Infrastructure.Repositories;
 
 public class TelegramUserSettingsRepository : ITelegramUserSettingsRepository
 {
-#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
     private readonly ApplicationDbContext m_Context;
-#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 
     public TelegramUserSettingsRepository(ApplicationDbContext context)
     {
@@ -35,10 +33,7 @@ public class TelegramUserSettingsRepository : ITelegramUserSettingsRepository
             .ToListAsync(ct).ConfigureAwait(false);
     }
 
-    public async Task AddAsync(TelegramUserSettings settings, CancellationToken ct = default)
-    {
-        await this.m_Context.Set<TelegramUserSettings>().AddAsync(settings, ct);
-    }
+    public async Task AddAsync(TelegramUserSettings settings, CancellationToken ct = default) => await this.m_Context.Set<TelegramUserSettings>().AddAsync(settings, ct).ConfigureAwait(false);
 
     public Task UpdateAsync(TelegramUserSettings settings, CancellationToken ct = default)
     {
@@ -46,8 +41,5 @@ public class TelegramUserSettingsRepository : ITelegramUserSettingsRepository
         return Task.CompletedTask;
     }
 
-    public async Task SaveChangesAsync(CancellationToken ct = default)
-    {
-        await this.m_Context.SaveChangesAsync(ct).ConfigureAwait(false);
-    }
+    public async Task SaveChangesAsync(CancellationToken ct = default) => await this.m_Context.SaveChangesAsync(ct).ConfigureAwait(false);
 }
