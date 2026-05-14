@@ -3,9 +3,9 @@ WORKDIR /App
 
 COPY . ./
 
-RUN dotnet restore
+RUN dotnet restore "SimRacingSchedule.Api/SimRacingSchedule.Api.csproj"
 
-RUN dotnet publish -o out
+RUN dotnet publish "SimRacingSchedule.Api/SimRacingSchedule.Api.csproj" -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App

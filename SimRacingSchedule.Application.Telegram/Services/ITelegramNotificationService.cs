@@ -7,6 +7,7 @@ public interface ITelegramNotificationService
 {
     Task SendShiftReminderAsync(Shift shift, Employee employee, int minutesBefore, CancellationToken ct = default);
     Task SendShiftExchangeNotificationAsync(ShiftExchangeRequest request, string action, CancellationToken ct = default);
+    Task SendExchangeRequestWithButtonsAsync(ShiftExchangeRequest request, Employee target, CancellationToken ct = default);
     Task SendWelcomeMessageAsync(long chatId, string employeeName, CancellationToken ct = default);
     Task SendSettingsMessageAsync(long chatId, TelegramUserSettings settings, CancellationToken ct = default);
 }

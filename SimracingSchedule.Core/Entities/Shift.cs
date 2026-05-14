@@ -93,6 +93,8 @@ public class Shift
         this.CreatedAt = DateTime.UtcNow;
     }
 
+    private Shift() { }
+
     /// <summary>
     /// Получает идентификатор смены.
     /// </summary>

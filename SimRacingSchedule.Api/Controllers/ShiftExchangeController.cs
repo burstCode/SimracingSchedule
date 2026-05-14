@@ -141,16 +141,6 @@ public class ShiftExchangeController : ControllerBase
         return Ok(result);
     }
 
-    // Вспомогательный метод для получения запроса на обмен
-#pragma warning disable S1172 // Unused method parameters should be removed
     private Task<ShiftExchangeRequest?> GetExchangeRequestById(Guid requestId)
-#pragma warning restore S1172 // Unused method parameters should be removed
-    {
-        // Здесь нужно использовать репозиторий
-        // Временно заглушка - нужно добавить IShiftExchangeRepository в конструктор
-        // Или вызвать через mediator запрос GetExchangeRequestQuery
-        // Временное решение - возвращаем null
-        // TODO: Добавить нормальную реализацию через репозиторий или CQRS запрос
-        return Task.FromResult<ShiftExchangeRequest?>(null);
-    }
+        => this._exchangeRepository.GetByIdAsync(requestId);
 }

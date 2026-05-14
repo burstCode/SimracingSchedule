@@ -164,6 +164,47 @@ public class TelegramNotificationService : ITelegramNotificationService
             cancellationToken: ct);
     }
 
+    public async Task SendExchangeRequestWithButtonsAsync(ShiftExchangeRequest request, Employee target, CancellationToken ct = default)
+    {
+        TelegramUserSettings? settings = await m_SettingsRepository.GetByEmployeeIdAsync(target.Id, ct);
+        if (settings == null || !settings.IsEnabled || !settings.NotifyShiftExchange)
+            return;
+
+        string requesterName = $"{request.Requester?.LastName} {request.Requester?.FirstName}";
+        string theirDate = request.RequesterShift?.StartTime.ToString("dd.MM.yyyy HH:mm") ?? "?";
+        string myDate    = request.TargetShift?.StartTime.ToString("dd.MM.yyyy HH:mm") ?? "?";
+
+        string message = $"""
+        🔄 *Новый запрос на обмен сменами!*
+
+        📥 *От:* {requesterName}
+        📅 *Их смена:* {theirDate}
+        📅 *Ваша смена:* {myDate}
+        💬 *Сообщение:* {request.RequestMessage ?? "Без сообщения"}
+
+        Используйте кнопки ниже для ответа:
+        """;
+
+        InlineKeyboardMarkup keyboard = new(new[]
+        {
+            new[]
+            {
+                InlineKeyboardButton.WithCallbackData("✅ Принять", $"exc_acc:{request.Id:N}"),
+                InlineKeyboardButton.WithCallbackData("❌ Отклонить", $"exc_rej:{request.Id:N}"),
+            },
+        });
+
+        try
+        {
+            await m_BotClient.SendMessage(settings.TelegramChatId, message,
+                ParseMode.Markdown, replyMarkup: keyboard, cancellationToken: ct);
+        }
+        catch (Exception ex)
+        {
+            m_Logger.LogError(ex, "Failed to send exchange request with buttons to chat {ChatId}", settings.TelegramChatId);
+        }
+    }
+
     private string GetShiftExchangeMessage(ShiftExchangeRequest request, string action, bool isForRequester)
     {
         string requesterName = $"{request.Requester!.FirstName} {request.Requester.LastName}";
@@ -194,10 +235,10 @@ public class TelegramNotificationService : ITelegramNotificationService
             
             "approved" => $"""
             ✅ *Запрос на обмен сменами ОДОБРЕН!*
-            
+
             🔄 *С кем:* {(isForRequester ? targetName : requesterName)}
-            📅 *Смена успешно обменена!
-            
+            📅 *Смена успешно обменена!*
+
             🎉 Поздравляем! Смены успешно обменены.
             """,
             

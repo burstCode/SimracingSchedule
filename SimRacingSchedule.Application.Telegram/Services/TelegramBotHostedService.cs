@@ -32,18 +32,17 @@ public class TelegramBotHostedService : BackgroundService
             AllowedUpdates = [UpdateType.Message, UpdateType.CallbackQuery]
         };
 
-        using IServiceScope scope = m_ServiceProvider.CreateScope();
-        TelegramCommandHandler commandHandler = scope.ServiceProvider.GetRequiredService<TelegramCommandHandler>();
-
         m_BotClient.StartReceiving(
             updateHandler: async (bot, update, ct) =>
             {
+                using IServiceScope scope = m_ServiceProvider.CreateScope();
+                TelegramCommandHandler commandHandler = scope.ServiceProvider.GetRequiredService<TelegramCommandHandler>();
                 await commandHandler.HandleUpdateAsync(update, ct);
             },
-            errorHandler: async (bot, exception, ct) =>
+            errorHandler: (bot, exception, ct) =>
             {
                 m_Logger.LogError(exception, "Telegram Bot error");
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             },
             receiverOptions: receiverOptions,
             cancellationToken: stoppingToken
@@ -51,7 +50,6 @@ public class TelegramBotHostedService : BackgroundService
 
         m_Logger.LogInformation("Telegram Bot is listening for updates");
 
-        // Keep the service running
         await Task.Delay(Timeout.Infinite, stoppingToken);
     }
 }
