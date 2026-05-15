@@ -1,0 +1,57 @@
+stages:
+  - lint
+  - test
+  - build
+
+variables:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_NOLOGO: "1"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+
+# Статичесеий анализ кода
+lint:
+  stage: lint
+  tags:
+    - trpo_runner
+  script:
+    - dotnet restore SimRacingSchedule.Api/SimRacingSchedule.Api.csproj
+    - >-
+      dotnet build SimRacingSchedule.Api/SimRacingSchedule.Api.csproj
+      --no-restore
+      -c Release
+      --no-incremental
+      -p:TreatWarningsAsErrors=false
+  allow_failure: true
+
+# Юнит-тесты
+test:
+  stage: test
+  tags:
+    - trpo_runner
+  script:
+    - dotnet restore SimRacingSchedule.Tests/SimRacingSchedule.Tests.csproj
+    - >-
+      dotnet test SimRacingSchedule.Tests/SimRacingSchedule.Tests.csproj
+      --no-restore
+      -p:RunAnalyzers=false
+      --logger "console;verbosity=normal"
+
+# Сборка артефакта
+build:
+  stage: build
+  tags:
+    - trpo_runner
+  script:
+    - dotnet restore SimRacingSchedule.Api/SimRacingSchedule.Api.csproj
+    - >-
+      dotnet publish SimRacingSchedule.Api/SimRacingSchedule.Api.csproj
+      -c Release
+      --no-restore
+      -p:RunAnalyzers=false
+      -p:DebugType=none
+      -p:DebugSymbols=false
+      -o ./publish
+  artifacts:
+    paths:
+      - publish/
+    expire_in: 1 week
