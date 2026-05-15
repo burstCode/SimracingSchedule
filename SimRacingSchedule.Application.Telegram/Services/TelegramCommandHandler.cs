@@ -377,6 +377,18 @@ public class TelegramCommandHandler
             await ShowPendingLinksAsync(chatId, msgId, ct);
             return;
         }
+        if (data.StartsWith("adm_emp_del:"))
+        {
+            Guid empId = Guid.ParseExact(data["adm_emp_del:".Length..], "N");
+            await ShowEmployeeDeleteConfirmAsync(chatId, msgId, empId, ct);
+            return;
+        }
+        if (data.StartsWith("adm_emp_del_ok:"))
+        {
+            Guid empId = Guid.ParseExact(data["adm_emp_del_ok:".Length..], "N");
+            await DeactivateEmployeeAsync(chatId, msgId, empId, ct);
+            return;
+        }
         if (data.StartsWith("adm_link:"))
         {
             string rest = data["adm_link:".Length..];
@@ -692,6 +704,13 @@ public class TelegramCommandHandler
         {
             new[] { InlineKeyboardButton.WithCallbackData("➕ Создать сотрудника", "adm_emp_new") },
         };
+        if (employees.Any())
+        {
+            rows.Add(new[] { InlineKeyboardButton.WithCallbackData("─── Удалить ───", "adm_employees") });
+            foreach (Employee e in employees)
+                rows.Add(new[] { InlineKeyboardButton.WithCallbackData(
+                    $"🗑 {e.LastName} {e.FirstName}", $"adm_emp_del:{e.Id:N}") });
+        }
         if (s_PendingLinks.Any())
             rows.Add(new[] { InlineKeyboardButton.WithCallbackData($"🔗 Ожидают привязки ({s_PendingLinks.Count})", "adm_pending_links") });
         rows.Add(new[] { InlineKeyboardButton.WithCallbackData("🔙 Главное меню", "main") });
@@ -823,6 +842,57 @@ public class TelegramCommandHandler
             ct);
     }
 
+    // ─── Employee deletion ────────────────────────────────────────────────
+
+    private async Task ShowEmployeeDeleteConfirmAsync(long chatId, int msgId, Guid empId, CancellationToken ct)
+    {
+        Employee? emp = await m_EmployeeRepo.GetByIdAsync(empId, ct);
+        if (emp == null)
+        {
+            await EditMsgAsync(chatId, msgId, "❌ Сотрудник не найден.", MainMenuKb(), ct);
+            return;
+        }
+
+        string name      = $"{emp.LastName} {emp.FirstName}" + (emp.Patronymic != null ? $" {emp.Patronymic}" : "");
+        string roleLabel = emp.Role == EmployeeRole.Administrator ? "🔑 Администратор" : "👷 Сотрудник";
+
+        await EditMsgAsync(chatId, msgId,
+            $"🗑 *Удалить сотрудника?*\n\n👤 {name}\n💼 {emp.Position}\n{roleLabel}",
+            new InlineKeyboardMarkup(new[]
+            {
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("✅ Да, удалить", $"adm_emp_del_ok:{empId:N}"),
+                    InlineKeyboardButton.WithCallbackData("🔙 Отмена", "adm_employees"),
+                },
+            }),
+            ct);
+    }
+
+    private async Task DeactivateEmployeeAsync(long chatId, int msgId, Guid empId, CancellationToken ct)
+    {
+        Employee? emp = await m_EmployeeRepo.GetByIdAsync(empId, ct);
+        if (emp == null)
+        {
+            await EditMsgAsync(chatId, msgId, "❌ Сотрудник не найден.", MainMenuKb(), ct);
+            return;
+        }
+
+        emp.Deactivate();
+        await m_EmployeeRepo.UpdateAsync(emp, ct);
+        await m_EmployeeRepo.SaveChangesAsync(ct);
+
+        string name = $"{emp.LastName} {emp.FirstName}";
+        await EditMsgAsync(chatId, msgId,
+            $"✅ *Сотрудник удалён.*\n\n👤 {name}",
+            new InlineKeyboardMarkup(new[]
+            {
+                new[] { InlineKeyboardButton.WithCallbackData("👥 К сотрудникам", "adm_employees") },
+                new[] { InlineKeyboardButton.WithCallbackData("🔙 Главное меню", "main") },
+            }),
+            ct);
+    }
+
     // ─── Telegram account linking ─────────────────────────────────────────
 
     private async Task NotifyAdminsOfLinkRequestAsync(long pendingChatId, User from, CancellationToken ct)
@@ -915,20 +985,41 @@ public class TelegramCommandHandler
             return;
         }
 
-        TelegramUserSettings? existing = await m_SettingsRepo.GetByEmployeeIdAsync(empId, ct);
-        if (existing != null)
+        // Check by chatId first — avoids unique constraint violation if chatId is already linked
+        TelegramUserSettings? existingByChatId = await m_SettingsRepo.GetByChatIdAsync(pendingChatId, ct);
+        TelegramUserSettings? existingByEmpId  = await m_SettingsRepo.GetByEmployeeIdAsync(empId, ct);
+
+        if (existingByChatId != null && existingByChatId.EmployeeId == empId)
         {
-            existing.TelegramChatId = pendingChatId;
-            existing.IsEnabled = true;
-            await m_SettingsRepo.UpdateAsync(existing, ct);
+            // Already correctly linked — just ensure it's enabled
+            existingByChatId.IsEnabled = true;
+            await m_SettingsRepo.UpdateAsync(existingByChatId, ct);
+        }
+        else if (existingByChatId != null)
+        {
+            // chatId was linked to a different employee — re-link to empId
+            // Remove stale settings for empId if they exist under a different chatId
+            if (existingByEmpId != null && existingByEmpId.Id != existingByChatId.Id)
+                await m_SettingsRepo.DeleteAsync(existingByEmpId, ct);
+
+            existingByChatId.EmployeeId = empId;
+            existingByChatId.IsEnabled  = true;
+            await m_SettingsRepo.UpdateAsync(existingByChatId, ct);
+        }
+        else if (existingByEmpId != null)
+        {
+            // Employee already has settings under a different chatId — update chatId
+            existingByEmpId.TelegramChatId = pendingChatId;
+            existingByEmpId.IsEnabled      = true;
+            await m_SettingsRepo.UpdateAsync(existingByEmpId, ct);
         }
         else
         {
             await m_SettingsRepo.AddAsync(new TelegramUserSettings
             {
-                EmployeeId = empId,
+                EmployeeId     = empId,
                 TelegramChatId = pendingChatId,
-                IsEnabled = true,
+                IsEnabled      = true,
             }, ct);
         }
         await m_SettingsRepo.SaveChangesAsync(ct);

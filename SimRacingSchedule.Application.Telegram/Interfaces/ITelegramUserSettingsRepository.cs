@@ -9,5 +9,6 @@ public interface ITelegramUserSettingsRepository
     Task<IEnumerable<TelegramUserSettings>> GetAllEnabledAsync(CancellationToken ct = default);
     Task AddAsync(TelegramUserSettings settings, CancellationToken ct = default);
     Task UpdateAsync(TelegramUserSettings settings, CancellationToken ct = default);
+    Task DeleteAsync(TelegramUserSettings settings, CancellationToken ct = default);
     Task SaveChangesAsync(CancellationToken ct = default);
 }

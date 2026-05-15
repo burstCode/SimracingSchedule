@@ -41,5 +41,11 @@ public class TelegramUserSettingsRepository : ITelegramUserSettingsRepository
         return Task.CompletedTask;
     }
 
+    public Task DeleteAsync(TelegramUserSettings settings, CancellationToken ct = default)
+    {
+        this.m_Context.Set<TelegramUserSettings>().Remove(settings);
+        return Task.CompletedTask;
+    }
+
     public async Task SaveChangesAsync(CancellationToken ct = default) => await this.m_Context.SaveChangesAsync(ct).ConfigureAwait(false);
 }
